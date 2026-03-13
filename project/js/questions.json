@@ -1,0 +1,302 @@
+[
+    {
+        "id": 1,
+        "axis": "EI",
+        "prompt": "Your ideal Friday night is…",
+        "options": [
+            {
+                "text": "crowded house party / dance floor",
+                "letter": "E"
+            },
+            {
+                "text": "cozy room + headphones + snack",
+                "letter": "I"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "axis": "EI",
+        "prompt": "At a new event, you’re drawn to…",
+        "options": [
+            {
+                "text": "the loud group laughing",
+                "letter": "E"
+            },
+            {
+                "text": "the quiet corner with one person chatting",
+                "letter": "I"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "axis": "EI",
+        "prompt": "Your phone battery is at 5%. You choose…",
+        "options": [
+            {
+                "text": "call someone anyway",
+                "letter": "E"
+            },
+            {
+                "text": "airplane mode and disappear",
+                "letter": "I"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "axis": "EI",
+        "prompt": "You get a free hour. You’d rather…",
+        "options": [
+            {
+                "text": "go out and “see what happens”",
+                "letter": "E"
+            },
+            {
+                "text": "stay in and do your own thing",
+                "letter": "I"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "axis": "EI",
+        "prompt": "When something exciting happens, you…",
+        "options": [
+            {
+                "text": "tell people immediately",
+                "letter": "E"
+            },
+            {
+                "text": "keep it to yourself for a bit",
+                "letter": "I"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "axis": "NS",
+        "prompt": "You’re choosing a gift. You pick…",
+        "options": [
+            {
+                "text": "something symbolic / inside joke",
+                "letter": "N"
+            },
+            {
+                "text": "something practical they’ll use",
+                "letter": "S"
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "axis": "NS",
+        "prompt": "You’re exploring a city. You follow…",
+        "options": [
+            {
+                "text": "a random side street that “feels interesting”",
+                "letter": "N"
+            },
+            {
+                "text": "a list of top-rated places",
+                "letter": "S"
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "axis": "NS",
+        "prompt": "You’re watching a movie. You care more about…",
+        "options": [
+            {
+                "text": "the theme / message / meaning",
+                "letter": "N"
+            },
+            {
+                "text": "the details / realism / what actually happened",
+                "letter": "S"
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "axis": "NS",
+        "prompt": "Your desk looks like…",
+        "options": [
+            {
+                "text": "chaotic but “I know where everything is”",
+                "letter": "N"
+            },
+            {
+                "text": "neat, labeled, and organized",
+                "letter": "S"
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "axis": "NS",
+        "prompt": "You trust a decision more when it’s based on…",
+        "options": [
+            {
+                "text": "a gut feeling / pattern you notice",
+                "letter": "N"
+            },
+            {
+                "text": "clear evidence / what you can see",
+                "letter": "S"
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "axis": "TF",
+        "prompt": "A friend asks for advice. You respond with…",
+        "options": [
+            {
+                "text": "the honest solution, straight up",
+                "letter": "T"
+            },
+            {
+                "text": "comfort first, then advice",
+                "letter": "F"
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "axis": "TF",
+        "prompt": "In an argument, you value…",
+        "options": [
+            {
+                "text": "being correct and consistent",
+                "letter": "T"
+            },
+            {
+                "text": "keeping the relationship okay",
+                "letter": "F"
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "axis": "TF",
+        "prompt": "Someone cancels plans last minute. Your first reaction is…",
+        "options": [
+            {
+                "text": "“Okay — what happened? Give me the reason.”",
+                "letter": "T"
+            },
+            {
+                "text": "“Are you okay? Don’t feel bad.”",
+                "letter": "F"
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "axis": "TF",
+        "prompt": "A group project is failing. Your instinct is to…",
+        "options": [
+            {
+                "text": "assign roles and fix the system",
+                "letter": "T"
+            },
+            {
+                "text": "check in on how everyone’s doing",
+                "letter": "F"
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "axis": "TF",
+        "prompt": "You respect someone more when they are…",
+        "options": [
+            {
+                "text": "smart and efficient",
+                "letter": "T"
+            },
+            {
+                "text": "kind and thoughtful",
+                "letter": "F"
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "axis": "JP",
+        "prompt": "Packing for a trip looks like…",
+        "options": [
+            {
+                "text": "checklist + folded outfits",
+                "letter": "J"
+            },
+            {
+                "text": "throwing stuff in last minute",
+                "letter": "P"
+            }
+        ]
+    },
+    {
+        "id": 17,
+        "axis": "JP",
+        "prompt": "You’re going out to eat with friends. You’re the one who…",
+        "options": [
+            {
+                "text": "checks the menu ahead of time and already has a plan",
+                "letter": "J"
+            },
+            {
+                "text": "decides on the spot based on the mood",
+                "letter": "P"
+            }
+        ]
+    },
+    {
+        "id": 18,
+        "axis": "JP",
+        "prompt": "When you start a project, you…",
+        "options": [
+            {
+                "text": "outline first, then execute",
+                "letter": "J"
+            },
+            {
+                "text": "jump in and figure it out",
+                "letter": "P"
+            }
+        ]
+    },
+    {
+        "id": 19,
+        "axis": "JP",
+        "prompt": "Your to-do list is…",
+        "options": [
+            {
+                "text": "clean, realistic, and satisfying to complete",
+                "letter": "J"
+            },
+            {
+                "text": "a living creature that keeps growing",
+                "letter": "P"
+            }
+        ]
+    },
+    {
+        "id": 20,
+        "axis": "JP",
+        "prompt": "You get an invitation for tomorrow. You feel…",
+        "options": [
+            {
+                "text": "happy because you can plan it",
+                "letter": "J"
+            },
+            {
+                "text": "nervous because your mood might change",
+                "letter": "P"
+            }
+        ]
+    }
+]

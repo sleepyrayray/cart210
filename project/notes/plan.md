@@ -1,119 +1,173 @@
-# Quiz Flow + UI Plan (Prototype)
+# Quiz Flow + UI Plan (Prototype → “AI Robot Personality Builder”)
 
-## Core concept (updated)
-- This is less of a “quiz” and more of a **character / personality builder**.
-- New framing idea: the program is used to **assign a personality profile to an AI robot**.
-- The user is effectively “training” or “configuring” their robot by making choices.
-- At the end, the user can **download (fake) the collected data** as if it can be uploaded into their AI robot.
+This project is shifting from a normal personality quiz into a **character/personality builder**: a sleek, official-looking interface where a *human* configures a personality profile for an AI robot. The system collects selections, generates a “personality package,” and outputs a downloadable (fake) data file meant to be “loaded” into the robot.
 
 ---
 
-## Screens / States
-
-### 1) Title Screen (with “What is this?” + Consent Checkbox)
-**Goal:** set the tone + require consent before starting.
-
-**UI elements:**
-- Title (e.g., “ROBOT PERSONALITY BUILDER”)
-- A button or link: **“What is this?”**
-- A checkbox statement (required to start):
-  - Example: “I understand this program collects my choices to generate a personality profile.”
-- **Start button**
-  - Disabled until checkbox is checked
-  - Becomes clickable only after consent
+## Overall tone + design direction
+- **Style:** clean, official, utopian, respected (think: government/medical/enterprise UI, but friendly).
+- **Voice:** address the user as **Human** (or similar), like the system is speaking formally but not cold.
+- **Purpose (in-world):** this is the “standard tool” people use to set a robot’s personality profile in the future.
+- **Interaction (prototype):** text-only choices for now; images will be added later.
 
 ---
 
-### 2) “What is this?” Screen (Instructions + Context)
-**Goal:** explain what the experience is and how it works.
-
-**Includes:**
-- Short explanation: this is a personality builder for an AI robot (simulation)
-- How to play:
-  - 20 prompts
-  - 2 choices each
-  - Use **Back** and **Next**
-- A note about interpretation:
-  - the system will generate a personality outcome based on choices
-- Button: **Back to Start** (or “Close”)
-
-*(No separate “instructions screen” needed — instructions live here.)*
+## Global behavior rules
+- **Randomize question order** each run.
+- **Randomize option A/B order** per question (so the same personality doesn’t always map to left or right).
+- **Two-choice prompts** (BuzzFeed-style, fun), but framed as “personality parameters” for a robot.
+- This is less a quiz and more a **personality configuration workflow**.
 
 ---
 
-### 3) Question Screen (20 prompts)
-**Goal:** main interaction loop.
+## Screen Flow (State Machine)
+
+### 1) Title / Landing Screen (with gated consent)
+**Goal:** establish the official “robot personality builder” premise and require consent.
 
 **Layout:**
-- Progress indicator: “Question X / 20”
-- Prompt text in the center
-- Two large choice buttons (text-only for prototype)
-- Navigation buttons:
-  - **Back** (go to previous question)
-  - **Next** (advance)
+- Header: **AI Personality Builder**
+- Subheader: “Welcome, Human.”
+- Short description: “Configure a personality package for your AI unit using 20 selections.”
 
-**Behavior / logic:**
-- User must select A or B before “Next” becomes active (recommended)
-- **Randomize question order**
-- **Randomize option placement**
-  - Sometimes the “A” choice appears on the left, sometimes on the right
-  - Avoids feeling “rigged” or predictable
+**Controls:**
+- Button: **What is this?** (opens modal/overlay)
+- Checkbox (required):  
+  - “I understand this tool collects my selections to generate a personality package for an AI unit.”
+- Button: **Start Configuration**
+  - **Disabled** until checkbox is checked.
 
-**Note:** No flashing “inference updated” feedback for now (can add later).
+**Notes:**
+- Instructions will live inside **What is this?** (no separate instructions screen).
 
 ---
 
-### 4) Processing Screen
-**Goal:** dramatize algorithmic authority / system feel.
+### 2) “What is this?” Modal / Overlay (includes instructions)
+**Goal:** explain the tool in a friendly, official way and clarify how it works.
+
+**Content (example sections):**
+- “This interface helps Humans configure an AI unit’s personality profile.”
+- “You will make 20 selections. Each choice adjusts personality parameters.”
+- “At the end, the system generates a personality profile and a downloadable data package (simulation).”
+- “This is a prototype for an artwork / concept system.” *(optional, depending on how “in-world” you want it to feel)*
+
+**Controls:**
+- Button: **Close**
+
+---
+
+### 3) Configuration Screen (Questions)
+**Goal:** allow the Human to set the robot’s personality via 20 two-choice prompts.
+
+**Layout:**
+- Top bar:
+  - “Human: Configuration Session”
+  - Progress indicator: **Step X / 20**
+  - Progress bar (simple and clean)
+
+- Center:
+  - Prompt text (the “parameter prompt”)
+  - Two large choice panels/buttons (text-only for prototype)
+
+- Bottom bar:
+  - **Back** button
+  - **Next** button
 
 **Behavior:**
-- No clicking to continue.
-- A short timed sequence:
-  - “Analyzing responses…”
-  - “Generating personality profile…”
-  - “Matching archetype…”
-- After the sequence ends, show a **“View Results”** button.
+- The Human can select an option, then click **Next**.
+- **Next** is disabled until a selection is made.
+- **Back** goes to the previous prompt and preserves the previous selection.
+
+**Randomization:**
+- Questions are shuffled at the beginning of each run.
+- Option ordering is randomized per question (A/B can swap), but the scoring mapping swaps with it.
 
 ---
 
-### 5) Result Screen (Robot Personality Outcome)
-**Goal:** reveal the personality type outcome without showing 4-letter code.
+### 4) Processing Screen (system analysis)
+**Goal:** dramatize “official computation” and make it feel like a real tool.
+
+**Behavior:**
+- No click-to-continue.
+- A short timed sequence (e.g., 2–4 seconds), then transitions to results.
+
+**UI:**
+- “Analyzing configuration…”
+- “Generating personality package…”
+- “Compiling profile…”
+- Optional clean loading indicator (bar/spinner)
+
+**Controls:**
+- Button appears at the end: **View Results**
+
+---
+
+### 5) Results Screen (personality output)
+**Goal:** present the generated “personality profile” as if it’s a final configuration for the robot.
+
+**Layout:**
+- Header: **Personality Package Generated**
+- Featured block:
+  - Placeholder where famous-person image will go later
+  - For now, show a big label: **[MBTI CODE PLACEHOLDER]** (e.g., “INTJ”)
+- Description block:
+  - For now, use the **short type description**.
+- Optional small “spec sheet” section:
+  - 3–5 traits (short bullets)
+  - “Recommended use cases” (playful but official)
+
+**Buttons:**
+- **I accept — install this personality**
+- **I refuse — reconfigure (retake)**
+
+**Notes:**
+- “Accept” should feel like committing to a robot personality.
+- “Refuse” loops back to the start (or question screen) and reshuffles.
+
+---
+
+### 6) Download Screen / Data Package Export (fake download)
+**Goal:** simulate exporting the “data collected” as a file to load into the AI robot.
+
+**Triggered by:** pressing **I accept — install this personality**
 
 **UI elements:**
-- Headline:
-  - “Your robot is just like ____.”
-- Famous person section:
-  - Placeholder for a famous-person image (added later)
-- Description text:
-  - For now, use the short description for the matched 16 personality type
-- Two outcome buttons:
-  - **“I accept — load this personality”** (wording can be refined)
-  - **“I refuse — retake quiz”**
+- “Preparing export…”
+- “Personality package ready.”
+- Button: **Download Personality Package (.json)** *(simulation)*  
+  - In prototype, this can download a JSON file that includes:
+    - chosen options
+    - computed scores
+    - final MBTI placeholder code
+    - timestamp/session id
+
+**Optional secondary action:**
+- Button: **Return to Home**
+- Button: **Configure Another Unit**
 
 ---
 
-### 6) “Download Data” / Export Screen (NEW IDEA)
-**Goal:** connect strongly to privacy + data collection (and make it feel real).
-
-**After acceptance:**
-- Show a panel like:
-  - “Personality package generated.”
-  - “Download configuration file for your AI robot.”
-- Button: **Download .json** (fake download, but could generate a real text file later)
-- Optional small text:
-  - “This file contains your choices and inferred traits.”
+## Notes on scoring + output (placeholder rules)
+- For now, results will still compute a **4-letter MBTI-style code** internally.
+- The displayed “famous person match” will be added later; for now the results feature:
+  - **MBTI code placeholder** (as the “identity label”)
+  - The short description text for that type
 
 ---
 
-## Randomization Plan (important)
-- Shuffle the question order at the start of each run.
-- For each question, randomly swap which choice appears on the left/right.
-- Keep scoring consistent even if visual positions swap.
-
----
-
-## Summary of the new framing (big project direction)
-This is a **robot personality configuration tool** disguised as a fun quiz.  
-The user isn’t “discovering who they are” as much as they are **building a personality** that can supposedly be installed into an AI system — which highlights how identity can become a dataset and how personality can be treated like a product.
-
----
+## Implementation plan (what we code next)
+1) Create a **state machine** for screens:
+   - `state = "title" | "modal" | "question" | "processing" | "results" | "download"`
+2) Add quiz data structure:
+   - 20 prompts
+   - each prompt has 2 options + axis scoring
+3) Add shuffle logic:
+   - shuffle question order on start
+   - randomize option order per question
+4) Implement UI components:
+   - checkbox gating Start
+   - modal overlay
+   - back/next navigation with stored selections
+   - processing timer + “View Results”
+   - results screen with accept/refuse actions
+   - fake JSON download when accepted
