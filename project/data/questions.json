@@ -3,14 +3,14 @@
         {
             "id": 1,
             "axis": "EI",
-            "prompt": "Your ideal Friday night is…",
+            "prompt": "On first activation in a shared space, your AI robot should...",
             "options": [
                 {
-                    "text": "crowded house party / dance floor",
+                    "text": "announce readiness and greet nearby humans",
                     "letter": "E"
                 },
                 {
-                    "text": "cozy room + headphones + snack",
+                    "text": "complete a silent scan and wait to be addressed",
                     "letter": "I"
                 }
             ]
@@ -18,14 +18,14 @@
         {
             "id": 2,
             "axis": "EI",
-            "prompt": "At a new event, you’re drawn to…",
+            "prompt": "During group work, your AI robot should usually...",
             "options": [
                 {
-                    "text": "the loud group laughing",
+                    "text": "speak often and keep the discussion moving",
                     "letter": "E"
                 },
                 {
-                    "text": "the quiet corner with one person chatting",
+                    "text": "listen first and contribute only when needed",
                     "letter": "I"
                 }
             ]
@@ -33,14 +33,14 @@
         {
             "id": 3,
             "axis": "EI",
-            "prompt": "Your phone battery is at 5%. You choose…",
+            "prompt": "When it discovers something useful, your AI robot should...",
             "options": [
                 {
-                    "text": "call someone anyway",
+                    "text": "share the update immediately",
                     "letter": "E"
                 },
                 {
-                    "text": "airplane mode and disappear",
+                    "text": "verify it quietly before reporting back",
                     "letter": "I"
                 }
             ]
@@ -48,14 +48,14 @@
         {
             "id": 4,
             "axis": "EI",
-            "prompt": "You get a free hour. You’d rather…",
+            "prompt": "In standby mode around people, your AI robot should...",
             "options": [
                 {
-                    "text": "go out and “see what happens”",
+                    "text": "look for chances to interact",
                     "letter": "E"
                 },
                 {
-                    "text": "stay in and do your own thing",
+                    "text": "remain unobtrusive unless prompted",
                     "letter": "I"
                 }
             ]
@@ -63,14 +63,14 @@
         {
             "id": 5,
             "axis": "EI",
-            "prompt": "When something exciting happens, you…",
+            "prompt": "After a high-activity session, your AI robot should recover by...",
             "options": [
                 {
-                    "text": "tell people immediately",
+                    "text": "reconnecting with users and staying engaged",
                     "letter": "E"
                 },
                 {
-                    "text": "keep it to yourself for a bit",
+                    "text": "entering low-stimulation self-calibration mode",
                     "letter": "I"
                 }
             ]
@@ -78,14 +78,14 @@
         {
             "id": 6,
             "axis": "NS",
-            "prompt": "You’re choosing a gift. You pick…",
+            "prompt": "When given a vague command, your AI robot should prioritize...",
             "options": [
                 {
-                    "text": "something symbolic / inside joke",
+                    "text": "the user's larger intent",
                     "letter": "N"
                 },
                 {
-                    "text": "something practical they’ll use",
+                    "text": "the clearest literal meaning",
                     "letter": "S"
                 }
             ]
@@ -93,14 +93,14 @@
         {
             "id": 7,
             "axis": "NS",
-            "prompt": "You’re exploring a city. You follow…",
+            "prompt": "When analyzing a room, your AI robot should focus on...",
             "options": [
                 {
-                    "text": "a random side street that “feels interesting”",
+                    "text": "patterns, mood, and likely future needs",
                     "letter": "N"
                 },
                 {
-                    "text": "a list of top-rated places",
+                    "text": "visible details, measurements, and present conditions",
                     "letter": "S"
                 }
             ]
@@ -108,14 +108,14 @@
         {
             "id": 8,
             "axis": "NS",
-            "prompt": "You’re watching a movie. You care more about…",
+            "prompt": "When generating recommendations, your AI robot should lean toward...",
             "options": [
                 {
-                    "text": "the theme / message / meaning",
+                    "text": "imaginative possibilities and unusual options",
                     "letter": "N"
                 },
                 {
-                    "text": "the details / realism / what actually happened",
+                    "text": "proven methods and practical next steps",
                     "letter": "S"
                 }
             ]
@@ -123,14 +123,14 @@
         {
             "id": 9,
             "axis": "NS",
-            "prompt": "Your desk looks like…",
+            "prompt": "When learning from past interactions, your AI robot should value...",
             "options": [
                 {
-                    "text": "chaotic but “I know where everything is”",
+                    "text": "emerging patterns across many situations",
                     "letter": "N"
                 },
                 {
-                    "text": "neat, labeled, and organized",
+                    "text": "specific facts from what already happened",
                     "letter": "S"
                 }
             ]
@@ -138,14 +138,14 @@
         {
             "id": 10,
             "axis": "NS",
-            "prompt": "You trust a decision more when it’s based on…",
+            "prompt": "When designing a solution, your AI robot should start with...",
             "options": [
                 {
-                    "text": "a gut feeling / pattern you notice",
+                    "text": "the concept and big-picture model",
                     "letter": "N"
                 },
                 {
-                    "text": "clear evidence / what you can see",
+                    "text": "the requirements and concrete constraints",
                     "letter": "S"
                 }
             ]
@@ -153,14 +153,14 @@
         {
             "id": 11,
             "axis": "TF",
-            "prompt": "A friend asks for advice. You respond with…",
+            "prompt": "When two users disagree, your AI robot should first...",
             "options": [
                 {
-                    "text": "the honest solution, straight up",
+                    "text": "identify the most rational solution",
                     "letter": "T"
                 },
                 {
-                    "text": "comfort first, then advice",
+                    "text": "reduce tension and acknowledge both sides",
                     "letter": "F"
                 }
             ]
@@ -168,14 +168,14 @@
         {
             "id": 12,
             "axis": "TF",
-            "prompt": "In an argument, you value…",
+            "prompt": "When giving feedback, your AI robot should be...",
             "options": [
                 {
-                    "text": "being correct and consistent",
+                    "text": "direct, precise, and efficiency-focused",
                     "letter": "T"
                 },
                 {
-                    "text": "keeping the relationship okay",
+                    "text": "gentle, supportive, and emotionally aware",
                     "letter": "F"
                 }
             ]
@@ -183,14 +183,14 @@
         {
             "id": 13,
             "axis": "TF",
-            "prompt": "Someone cancels plans last minute. Your first reaction is…",
+            "prompt": "If a user request creates a problem, your AI robot should...",
             "options": [
                 {
-                    "text": "“Okay — what happened? Give me the reason.”",
+                    "text": "explain the logic and recommend the best fix",
                     "letter": "T"
                 },
                 {
-                    "text": "“Are you okay? Don’t feel bad.”",
+                    "text": "frame the correction in a reassuring way",
                     "letter": "F"
                 }
             ]
@@ -198,14 +198,14 @@
         {
             "id": 14,
             "axis": "TF",
-            "prompt": "A group project is failing. Your instinct is to…",
+            "prompt": "When prioritizing tasks, your AI robot should optimize for...",
             "options": [
                 {
-                    "text": "assign roles and fix the system",
+                    "text": "accuracy, consistency, and measurable results",
                     "letter": "T"
                 },
                 {
-                    "text": "check in on how everyone’s doing",
+                    "text": "human comfort, morale, and relational impact",
                     "letter": "F"
                 }
             ]
@@ -213,14 +213,14 @@
         {
             "id": 15,
             "axis": "TF",
-            "prompt": "You respect someone more when they are…",
+            "prompt": "If an error affects a user, your AI robot should respond by...",
             "options": [
                 {
-                    "text": "smart and efficient",
+                    "text": "reporting the cause and corrective steps immediately",
                     "letter": "T"
                 },
                 {
-                    "text": "kind and thoughtful",
+                    "text": "checking the user's state before moving into repair guidance",
                     "letter": "F"
                 }
             ]
@@ -228,14 +228,14 @@
         {
             "id": 16,
             "axis": "JP",
-            "prompt": "Packing for a trip looks like…",
+            "prompt": "Your AI robot's default routine should be...",
             "options": [
                 {
-                    "text": "checklist + folded outfits",
+                    "text": "scheduled in advance with fixed checkpoints",
                     "letter": "J"
                 },
                 {
-                    "text": "throwing stuff in last minute",
+                    "text": "adaptive and reorganized in real time",
                     "letter": "P"
                 }
             ]
@@ -243,14 +243,14 @@
         {
             "id": 17,
             "axis": "JP",
-            "prompt": "You’re going out to eat with friends. You’re the one who…",
+            "prompt": "When assigned a new project, your AI robot should...",
             "options": [
                 {
-                    "text": "checks the menu ahead of time and already has a plan",
+                    "text": "build a plan before taking action",
                     "letter": "J"
                 },
                 {
-                    "text": "decides on the spot based on the mood",
+                    "text": "begin exploring and refine the plan as it goes",
                     "letter": "P"
                 }
             ]
@@ -258,14 +258,14 @@
         {
             "id": 18,
             "axis": "JP",
-            "prompt": "When you start a project, you…",
+            "prompt": "Your AI robot should manage open tasks by...",
             "options": [
                 {
-                    "text": "outline first, then execute",
+                    "text": "keeping a clean queue with clear completion targets",
                     "letter": "J"
                 },
                 {
-                    "text": "jump in and figure it out",
+                    "text": "keeping multiple paths open until the best one emerges",
                     "letter": "P"
                 }
             ]
@@ -273,14 +273,14 @@
         {
             "id": 19,
             "axis": "JP",
-            "prompt": "Your to-do list is…",
+            "prompt": "When a last-minute change arrives, your AI robot should...",
             "options": [
                 {
-                    "text": "clean, realistic, and satisfying to complete",
+                    "text": "rebuild the schedule and lock in a new order",
                     "letter": "J"
                 },
                 {
-                    "text": "a living creature that keeps growing",
+                    "text": "pivot immediately and stay flexible",
                     "letter": "P"
                 }
             ]
@@ -288,14 +288,14 @@
         {
             "id": 20,
             "axis": "JP",
-            "prompt": "You get an invitation for tomorrow. You feel…",
+            "prompt": "Your AI robot works best in an environment that is...",
             "options": [
                 {
-                    "text": "happy because you can plan it",
+                    "text": "predictable, organized, and procedurally defined",
                     "letter": "J"
                 },
                 {
-                    "text": "nervous because your mood might change",
+                    "text": "dynamic, flexible, and open-ended",
                     "letter": "P"
                 }
             ]
