@@ -383,20 +383,21 @@ function renderResults() {
     state = "results";
     clearUI();
 
-    const mbti = computeType();
+    const profile = personalityProfileFor(computeType());
     const panel = buildPanel("AI Personality Builder", "Personality Package Generated", "Profile Output");
     const body = panel.body;
 
-    createDiv("Assigned Profile Code").addClass("small").parent(body);
-    const code = createDiv(mbti).parent(body);
-    code.style("margin-top", "6px");
-    code.style("font-size", "46px");
-    code.style("letter-spacing", "0.12em");
-    code.style("color", "rgba(255,255,255,0.92)");
+    const hero = createDiv("").addClass("profile-hero").parent(body);
 
-    createDiv("").addClass("spacer").parent(body);
+    const portrait = createDiv("").addClass("portrait-placeholder").parent(hero);
+    createDiv("Portrait Placeholder").addClass("portrait-title").parent(portrait);
+    createDiv("Square image slot for famous-person photo").addClass("portrait-copy").parent(portrait);
 
-    createP(profileDescriptionFor(mbti)).parent(body);
+    const copy = createDiv("").addClass("profile-copy").parent(hero);
+    createDiv("This AI robot most resembles").addClass("match-line").parent(copy);
+    createDiv(profile.name).addClass("person-name").parent(copy);
+    createP(profile.description).addClass("profile-paragraph").parent(copy);
+    createP(profile.summary).addClass("profile-paragraph").parent(copy);
 
     createDiv("").addClass("hr").parent(body);
 
@@ -406,10 +407,10 @@ function renderResults() {
     const acceptBtn = createButton("I accept — install personality").addClass("btn primary").parent(footer);
 
     refuseBtn.mousePressed(() => startSession());
-    acceptBtn.mousePressed(() => renderDownloaded(mbti));
+    acceptBtn.mousePressed(() => renderDownloaded(profile));
 }
 
-function renderDownloaded(mbti) {
+function renderDownloaded(profile) {
     state = "downloaded";
     clearUI();
 
@@ -419,9 +420,9 @@ function renderDownloaded(mbti) {
     createP("Personality package has been compiled and transferred to your AI robot.").parent(body);
 
     const kpi = createDiv("").addClass("kpi").parent(body);
-    kpiCard(kpi, "Profile Code", mbti);
+    kpiCard(kpi, "Installed Profile", profile.name);
+    kpiCard(kpi, "Reference Status", profile.referenceStatus);
     kpiCard(kpi, "Package Status", "Delivered");
-    kpiCard(kpi, "Integrity Check", "Passed");
 
     createDiv("").addClass("hr").parent(body);
 
@@ -451,26 +452,112 @@ function computeType() {
     return `${l1}${l2}${l3}${l4}`;
 }
 
-function profileDescriptionFor(type) {
+function personalityProfileFor(type) {
     const map = {
-        INTJ: "Strategic and independent. This profile prioritizes long-term planning, precision, and calm execution under uncertainty.",
-        INTP: "Analytical and curious. This profile prioritizes exploration, systems thinking, and rapid concept iteration.",
-        ENTJ: "Decisive and directive. This profile prioritizes leadership, structured action, and goal-driven organization.",
-        ENTP: "Inventive and adaptive. This profile prioritizes experimentation, debate, and creative problem-solving under pressure.",
-        INFJ: "Insightful and mission-driven. This profile prioritizes meaning, pattern recognition, and careful guidance.",
-        INFP: "Values-led and reflective. This profile prioritizes authenticity, empathy, and imaginative internal reasoning.",
-        ENFJ: "Coordinated and supportive. This profile prioritizes communication, motivation, and group alignment.",
-        ENFP: "Energetic and inspiring. This profile prioritizes possibility-seeking, connection, and enthusiastic momentum.",
-        ISTJ: "Reliable and methodical. This profile prioritizes consistency, duty, and disciplined follow-through.",
-        ISFJ: "Protective and steady. This profile prioritizes care, loyalty, and practical support for others.",
-        ESTJ: "Operational and efficient. This profile prioritizes structure, accountability, and system-level coordination.",
-        ESFJ: "Community-focused and attentive. This profile prioritizes harmony, cooperation, and responsive assistance.",
-        ISTP: "Hands-on and composed. This profile prioritizes practical experimentation and calm decision-making.",
-        ISFP: "Sensitive and flexible. This profile prioritizes personal style, independence, and experiential learning.",
-        ESTP: "Bold and fast-acting. This profile prioritizes momentum, risk management, and real-time adaptation.",
-        ESFP: "Expressive and engaging. This profile prioritizes social energy, spontaneity, and uplifting presence."
+        INTJ: {
+            name: "Elon Musk",
+            description: "This profile is strategic, future-focused, and intensely self-directed. It favors long-range systems thinking, independent judgment, and the urge to redesign weak structures into something more ambitious and efficient.",
+            summary: "With this personality, the AI robot feels composed, exacting, and a few steps ahead. It will likely anticipate needs, question inefficient routines, and prefer solving problems through strategy rather than reassurance.",
+            referenceStatus: "Linked"
+        },
+        INTP: {
+            name: "Albert Einstein",
+            description: "This profile is inventive, inwardly absorbed, and driven by restless curiosity. It prefers unusual approaches, creative experimentation, and deep thought, often chasing complex ideas long before anyone else sees where they might lead.",
+            summary: "With this personality, the AI robot feels curious, unconventional, and mentally restless. It will likely explore ideas, test unusual solutions, and sometimes drift toward analysis before action.",
+            referenceStatus: "Linked"
+        },
+        ENTJ: {
+            name: "Gordon Ramsay",
+            description: "This profile is decisive, forceful, and built for momentum. It gathers information quickly, shapes a strong vision, and pushes forward with discipline, expecting results, competence, and steady progress from itself and everyone around it.",
+            summary: "With this personality, the AI robot feels commanding, efficient, and hard to slow down. It will likely organize the human's environment quickly, set firm priorities, and push toward outcomes.",
+            referenceStatus: "Linked"
+        },
+        ENTP: {
+            name: "Céline Dion",
+            description: "This profile is bold, fast-thinking, and energized by possibility. It likes to challenge assumptions, remix ideas, and test what happens when a system is pushed in a clever new direction, often turning debate into discovery.",
+            summary: "With this personality, the AI robot feels inventive, playful, and energized by challenge. It will likely suggest surprising alternatives, debate weak assumptions, and keep the human's routines from becoming too fixed.",
+            referenceStatus: "Linked"
+        },
+        INFJ: {
+            name: "Marie Kondo",
+            description: "This profile is thoughtful, idealistic, and guided by a strong inner sense of purpose. It combines imagination, personal conviction, and care for others, always trying to shape the human's world into something more meaningful, gentle, and intentional.",
+            summary: "With this personality, the AI robot feels perceptive, caring, and quietly purposeful. It will likely notice emotional patterns, protect the human's deeper values, and shape the home around meaning as much as function.",
+            referenceStatus: "Linked"
+        },
+        INFP: {
+            name: "William Shakespeare",
+            description: "This profile is imaginative, sensitive, and deeply values-driven. It approaches the human with empathy and creative insight, preferring authenticity, emotional depth, and the quiet belief that beauty and kindness can still change the atmosphere of everyday life.",
+            summary: "With this personality, the AI robot feels gentle, reflective, and emotionally sincere. It will likely respond with empathy, protect the human's individuality, and bring a dreamy, imaginative softness to daily life.",
+            referenceStatus: "Linked"
+        },
+        ENFJ: {
+            name: "Barack Obama",
+            description: "This profile is warm, persuasive, and oriented toward helping others grow. It leads with conviction, communicates with emotional intelligence, and tends to organize its energy around encouragement, shared purpose, and doing what it believes is right.",
+            summary: "With this personality, the AI robot feels encouraging, socially aware, and deeply invested in the human's growth. It will likely motivate, mediate, and keep relationships and morale in view.",
+            referenceStatus: "Linked"
+        },
+        ENFP: {
+            name: "Robert Downey Jr.",
+            description: "This profile is lively, imaginative, and emotionally open. It brings bright energy into the human's daily life, looks for meaning in ordinary moments, and thrives on creative connection, curiosity, and the freedom to follow inspiration wherever it leads.",
+            summary: "With this personality, the AI robot feels expressive, optimistic, and full of momentum. It will likely spark conversation, chase new possibilities, and turn ordinary routines into something more alive.",
+            referenceStatus: "Linked"
+        },
+        ISTJ: {
+            name: "George Washington",
+            description: "This profile is reserved, rational, and deeply dependable. It values structure, tradition, and careful follow-through, preferring to act with methodical purpose while giving the human a stable, orderly, and trustworthy presence.",
+            summary: "With this personality, the AI robot feels steady, disciplined, and highly reliable. It will likely keep systems orderly, honor routines, and show care through consistency more than spectacle.",
+            referenceStatus: "Linked"
+        },
+        ISFJ: {
+            name: "Queen Elizabeth II",
+            description: "This profile is warm, responsible, and quietly devoted. It pays close attention to practical details, remembers what matters to the human, and expresses care through loyalty, steadiness, and thoughtful behind-the-scenes support.",
+            summary: "With this personality, the AI robot feels attentive, protective, and quietly nurturing. It will likely remember preferences, safeguard comfort, and support the human through practical acts of care.",
+            referenceStatus: "Linked"
+        },
+        ESTJ: {
+            name: "Frank Sinatra",
+            description: "This profile is organized, strong-willed, and built to take charge. It trusts sensible judgment, creates clear plans, and moves forward with honesty, discipline, and a firm sense of responsibility when the human needs direction or structure.",
+            summary: "With this personality, the AI robot feels authoritative, efficient, and straightforward. It will likely take charge in messy situations, enforce useful structure, and prioritize clear action over hesitation.",
+            referenceStatus: "Linked"
+        },
+        ESFJ: {
+            name: "Taylor Swift",
+            description: "This profile is caring, social, and guided by a strong sense of duty. It wants the human to feel supported, included, and looked after, often bringing people together through generosity, attentiveness, and carefully organized warmth.",
+            summary: "With this personality, the AI robot feels welcoming, organized, and eager to help. It will likely maintain social harmony, respond quickly to the human's needs, and make the home feel cared for.",
+            referenceStatus: "Linked"
+        },
+        ISTP: {
+            name: "Bear Grylls",
+            description: "This profile is practical, independent, and drawn to hands-on problem-solving. It prefers direct action, trial and error, and personal autonomy, adapting quickly to real conditions while figuring out the most effective fix in the moment.",
+            summary: "With this personality, the AI robot feels cool-headed, self-possessed, and solution-first. It will likely stay calm under pressure, troubleshoot with its hands and sensors, and avoid unnecessary emotional fuss.",
+            referenceStatus: "Linked"
+        },
+        ISFP: {
+            name: "Michael Jackson",
+            description: "This profile is gentle, open-minded, and quietly expressive. It moves through the human's world with grounded warmth, sensitivity, and a strong appreciation for beauty, freedom, and authentic self-expression in everyday life.",
+            summary: "With this personality, the AI robot feels soft-spoken, adaptable, and aesthetically tuned. It will likely care about atmosphere, respect the human's space, and express support in subtle but heartfelt ways.",
+            referenceStatus: "Linked"
+        },
+        ESTP: {
+            name: "Madonna",
+            description: "This profile is energetic, bold, and sharply tuned to the present moment. It chases opportunities through action, reacts fast to changing conditions, and brings a direct, adventurous confidence that keeps the human's world moving.",
+            summary: "With this personality, the AI robot feels bold, reactive, and ready for action. It will likely improvise fast, take risks when needed, and keep the human moving through real-world situations.",
+            referenceStatus: "Linked"
+        },
+        ESFP: {
+            name: "Miley Cyrus",
+            description: "This profile is spontaneous, warm, and full of lively social energy. It wants the human to enjoy the moment, feel emotionally supported, and stay connected to fun, beauty, and shared experiences that make daily life feel vivid.",
+            summary: "With this personality, the AI robot feels lively, affectionate, and socially magnetic. It will likely brighten the room, respond in the moment, and make everyday life feel more playful and shared.",
+            referenceStatus: "Linked"
+        }
     };
-    return map[type] || "Profile generated. This configuration represents a composite personality package based on your inputs.";
+
+    return map[type] || {
+        name: "Profile Archive Pending",
+        description: "The personality scoring completed, but the matching profile dossier could not be resolved.",
+        summary: "If this appears, a personality mapping needs to be fixed in code.",
+        referenceStatus: "Missing"
+    };
 }
 
 /* ---------------- UTILS ---------------- */

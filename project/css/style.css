@@ -290,6 +290,79 @@ p {
     color: rgba(255, 255, 255, 0.70);
 }
 
+.profile-hero {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.portrait-placeholder {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius);
+    border: 1px dashed rgba(255, 255, 255, 0.22);
+    background:
+        linear-gradient(135deg, rgba(122, 167, 255, 0.10), rgba(114, 247, 214, 0.08)),
+        rgba(255, 255, 255, 0.04);
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    text-align: center;
+}
+
+.portrait-title {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.portrait-copy {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.64);
+}
+
+.profile-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-copy p {
+    margin: 0;
+}
+
+.match-line {
+    font-size: clamp(18px, 2.2vw, 24px);
+    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.84);
+}
+
+.person-name {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.05;
+}
+
+.profile-paragraph {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+    .profile-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .portrait-placeholder {
+        max-width: 320px;
+        width: 100%;
+    }
+}
+
 /* Modal */
 .modal-backdrop {
     position: absolute;
