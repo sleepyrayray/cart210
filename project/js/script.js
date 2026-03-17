@@ -2,7 +2,7 @@
 // (only two functional changes: remove the hint line + add a visible loader bar)
 
 let app;
-let state = "loading"; // loading | title | question | processing | results | downloaded
+let state = "loading"; // loading | title | question | processing | results | installing | downloaded
 let modalOpen = false;
 
 let rawQuestions = [];
@@ -18,10 +18,14 @@ let consentCheckbox;
 let processingStartMs = 0;
 let processingDurationMs = 2600;
 let showViewResults = false;
+let installStartMs = 0;
+let installDurationMs = 5400;
+let pendingInstalledProfile = null;
 
 // loader DOM refs
 let loaderFillEl = null;
 let loaderPctEl = null;
+let loaderTaskEls = [];
 
 function preload() {
     loadJSON("data/questions.json", onQuestionsLoaded, onQuestionsError);
@@ -71,6 +75,7 @@ function draw() {
 
         if (loaderFillEl) loaderFillEl.style("width", `${pct}%`);
         if (loaderPctEl) loaderPctEl.html(`${pct}%`);
+        updateTaskListState(t);
 
         if (elapsed > processingDurationMs) {
             showViewResults = true;
@@ -79,6 +84,26 @@ function draw() {
             // lock at 100%
             if (loaderFillEl) loaderFillEl.style("width", `100%`);
             if (loaderPctEl) loaderPctEl.html(`100%`);
+            updateTaskListState(1, true);
+        }
+    }
+
+    if (state === "installing") {
+        const elapsed = millis() - installStartMs;
+        const t = constrain(elapsed / installDurationMs, 0, 1);
+        const pct = Math.round(t * 100);
+
+        if (loaderFillEl) loaderFillEl.style("width", `${pct}%`);
+        if (loaderPctEl) loaderPctEl.html(`${pct}%`);
+        updateTaskListState(t);
+
+        if (elapsed > installDurationMs && pendingInstalledProfile) {
+            const installedProfile = pendingInstalledProfile;
+            pendingInstalledProfile = null;
+            if (loaderFillEl) loaderFillEl.style("width", "100%");
+            if (loaderPctEl) loaderPctEl.html("100%");
+            updateTaskListState(1, true);
+            renderDownloaded(installedProfile);
         }
     }
 }
@@ -104,6 +129,7 @@ function clearUI() {
     // reset loader refs
     loaderFillEl = null;
     loaderPctEl = null;
+    loaderTaskEls = [];
 }
 
 function initErrorTitle() {
@@ -232,6 +258,7 @@ function startSession() {
     scores = { E: 0, I: 0, N: 0, S: 0, T: 0, F: 0, J: 0, P: 0 };
     currentIndex = 0;
     showViewResults = false;
+    pendingInstalledProfile = null;
 
     questions = shuffleArray(structuredClone(rawQuestions));
 
@@ -352,14 +379,7 @@ function renderProcessing() {
         "Compiling install-ready package…"
     ];
 
-    const list = createDiv("").parent(body);
-    list.style("margin-top", "14px");
-
-    steps.forEach((s) => {
-        const line = createDiv(`• ${s}`).parent(list);
-        line.style("color", "rgba(255,255,255,0.78)");
-        line.style("margin", "6px 0");
-    });
+    buildTaskList(body, steps);
 
     createDiv("").addClass("hr").parent(body);
 
@@ -407,7 +427,42 @@ function renderResults() {
     const acceptBtn = createButton("I accept — install personality").addClass("btn primary").parent(footer);
 
     refuseBtn.mousePressed(() => startSession());
-    acceptBtn.mousePressed(() => renderDownloaded(profile));
+    acceptBtn.mousePressed(() => renderInstalling(profile));
+}
+
+function renderInstalling(profile) {
+    state = "installing";
+    clearUI();
+    pendingInstalledProfile = profile;
+
+    const panel = buildPanel("AI Personality Builder", "Transferring Personality Package", "Wireless Installation In Progress");
+    const body = panel.body;
+
+    createP("Sending the selected personality profile to the AI robot over a secure wireless transfer...").parent(body);
+
+    const loader = createDiv("").addClass("loader").parent(body);
+    loaderFillEl = createDiv("").addClass("loader-fill").parent(loader);
+
+    const meta = createDiv("").addClass("processing-meta").parent(body);
+    createDiv("Wireless link: stable").parent(meta);
+    loaderPctEl = createDiv("0%").parent(meta);
+
+    const steps = [
+        "Encrypting personality package...",
+        "Opening wireless handshake...",
+        "Transmitting behavioral data...",
+        "Syncing response patterns...",
+        "Finalizing AI robot installation..."
+    ];
+
+    buildTaskList(body, steps);
+
+    createDiv("").addClass("hr").parent(body);
+
+    const footer = createDiv("").addClass("footer").parent(body);
+    createDiv("Please do not interrupt the AI robot during wireless transfer.").addClass("small").parent(footer);
+
+    installStartMs = millis();
 }
 
 function renderDownloaded(profile) {
@@ -561,6 +616,38 @@ function personalityProfileFor(type) {
 }
 
 /* ---------------- UTILS ---------------- */
+
+function buildTaskList(parent, steps) {
+    const list = createDiv("").addClass("task-list").parent(parent);
+
+    loaderTaskEls = steps.map((step) => {
+        return createDiv(`• ${step}`).addClass("task-line task-pending").parent(list);
+    });
+
+    updateTaskListState(0);
+}
+
+function updateTaskListState(progress, markComplete = false) {
+    if (!loaderTaskEls.length) return;
+
+    const activeIndex = markComplete
+        ? loaderTaskEls.length
+        : Math.min(Math.floor(progress * loaderTaskEls.length), loaderTaskEls.length - 1);
+
+    loaderTaskEls.forEach((line, index) => {
+        line.removeClass("task-pending");
+        line.removeClass("task-active");
+        line.removeClass("task-complete");
+
+        if (markComplete || index < activeIndex) {
+            line.addClass("task-complete");
+        } else if (index === activeIndex) {
+            line.addClass("task-active");
+        } else {
+            line.addClass("task-pending");
+        }
+    });
+}
 
 function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {

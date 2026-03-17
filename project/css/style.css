@@ -85,12 +85,15 @@ canvas {
 }
 
 .badge {
-    font-size: 12px;
-    padding: 8px 10px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.82);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding-left: 14px;
+    border-left: 1px solid var(--line);
+    color: rgba(255, 255, 255, 0.62);
+    align-self: stretch;
+    display: flex;
+    align-items: center;
 }
 
 .panel-body {
@@ -228,6 +231,39 @@ p {
     gap: 12px;
     color: rgba(255, 255, 255, 0.70);
     font-size: 12px;
+}
+
+.task-list {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.task-line {
+    padding: 10px 12px;
+    border-left: 2px solid transparent;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.45;
+    transition: background 180ms ease, border-color 180ms ease, color 180ms ease, opacity 180ms ease;
+}
+
+.task-line.task-pending {
+    color: rgba(255, 255, 255, 0.42);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.task-line.task-active {
+    color: rgba(255, 255, 255, 0.92);
+    background: rgba(122, 167, 255, 0.12);
+    border-color: rgba(114, 247, 214, 0.65);
+}
+
+.task-line.task-complete {
+    color: rgba(255, 255, 255, 0.74);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(114, 247, 214, 0.28);
 }
 
 .question {
