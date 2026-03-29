@@ -73,10 +73,12 @@ canvas {
 
 .brand h1 {
     margin: 0;
-    font-size: 18px;
-    letter-spacing: 0.08em;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.86);
+    color: rgba(255, 255, 255, 0.96);
+    text-shadow: 0 0 24px rgba(114, 247, 214, 0.12);
 }
 
 .brand .sub {
@@ -105,6 +107,34 @@ canvas {
     gap: 12px;
     align-items: center;
     flex-wrap: wrap;
+}
+
+.title-copy {
+    margin-bottom: 28px;
+}
+
+.title-greeting {
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.78);
+    margin-bottom: 10px;
+}
+
+.title-intro {
+    text-align: center;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.consent-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 14px;
 }
 
 .spacer {
@@ -166,10 +196,11 @@ p {
     display: flex;
     gap: 10px;
     align-items: flex-start;
-    padding: 12px 14px;
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 14px;
+    padding: 0;
+}
+
+.checkbox + .checkbox {
+    padding-top: 4px;
 }
 
 .checkbox label {
@@ -326,116 +357,20 @@ p {
     color: rgba(255, 255, 255, 0.70);
 }
 
-.profile-hero {
-    display: grid;
-    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
-    gap: 18px;
-    align-items: start;
-}
-
-.portrait-placeholder {
-    aspect-ratio: 1 / 1;
-    border-radius: var(--radius);
-    border: 1px dashed rgba(255, 255, 255, 0.22);
-    background:
-        linear-gradient(135deg, rgba(122, 167, 255, 0.10), rgba(114, 247, 214, 0.08)),
-        rgba(255, 255, 255, 0.04);
-    display: grid;
-    place-items: center;
-    padding: 18px;
-    text-align: center;
-}
-
-.portrait-title {
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.82);
-}
-
-.portrait-copy {
-    margin-top: 8px;
-    font-size: 13px;
-    line-height: 1.45;
-    color: rgba(255, 255, 255, 0.64);
-}
-
 .profile-copy {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-width: 760px;
 }
 
 .profile-copy p {
     margin: 0;
 }
 
-.match-line {
-    font-size: clamp(18px, 2.2vw, 24px);
-    line-height: 1.25;
-    color: rgba(255, 255, 255, 0.84);
-}
-
-.person-name {
-    color: var(--accent);
-    font-weight: 600;
-    font-size: clamp(28px, 4vw, 40px);
-    line-height: 1.05;
-}
-
 .profile-paragraph {
     color: var(--muted);
     line-height: 1.6;
-}
-
-@media (max-width: 760px) {
-    .profile-hero {
-        grid-template-columns: 1fr;
-    }
-
-    .portrait-placeholder {
-        max-width: 320px;
-        width: 100%;
-    }
-}
-
-/* Modal */
-.modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    display: grid;
-    place-items: center;
-    padding: 20px;
-}
-
-.modal {
-    width: min(760px, 92vw);
-    border-radius: var(--radius-2);
-    background: rgba(10, 12, 20, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-}
-
-.modal .modal-header {
-    padding: 18px 20px 12px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.modal .modal-header h2 {
-    margin: 0;
-    font-size: 14px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.84);
-}
-
-.modal .modal-body {
-    padding: 16px 20px 18px 20px;
 }
 
 .kpi {

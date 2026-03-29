@@ -68,12 +68,12 @@ My piece is basically a “personality machine,” but I want it to feel like a 
 - **Overconfident inference:** the program acts like it knows more than it really does (similar to how feeds and algorithms escalate assumptions after small interactions).  
 - **A friendly interface with a slightly dystopian undertone:** fun quiz energy, but with moments that reveal how reductive it is.
 
-### The “famous person match” idea (how I’ll treat it)
+### The result-description idea (how I’ll treat it)
 At the end, I want the user to see:
 1) a type-like result (my remix), and  
-2) a small “you’re like ____ (famous person)” comparison.
+2) a short official-sounding personality description generated from that result.
 
-This is powerful because it’s *exactly* how quizzes build trust: they connect you to a recognizable figure and make the result feel real. But I’ll need to handle it carefully: famous-figure typing online is usually speculative, and the confidence of that comparison is part of what I’m critiquing. A good move would be to present it as **“the system’s guess”** rather than as fact.
+This still lets the system sound confident and authoritative, but avoids leaning on celebrity comparison to make the result feel real. That keeps the focus on categorization, inference, and the system’s power to tell the user who or what they are, which is closer to the core critique of the project.
 
 ---
 
@@ -89,4 +89,4 @@ This is powerful because it’s *exactly* how quizzes build trust: they connect 
 - Zárate-Torres, R. (2023). *How good is the Myers-Briggs Type Indicator for predicting leadership-related behaviours?* Frontiers in Psychology (open access). ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC10017728/))  
 - Association for Psychological Science (2021). *Skeptical ‘Deep Dive’ on the Myers-Briggs Test* (transcript/article). ([psychologicalscience.org](https://www.psychologicalscience.org/news/releases/2021-utc-myers-briggs.html))  
 - The Myers-Briggs Company. *MBTI Facts* (reliability/validity framing, and “not your whole identity”). ([themyersbriggs.com](https://www.themyersbriggs.com/en-US/Support/MBTI-Facts))  
-- 16Personalities. *Our Framework / Our Theory* and *Roles Defined* (how it mixes MBTI-style acronyms with a different model and role groupings). ([16personalities.com](https://www.16personalities.com/articles/our-theory))  
+- 16Personalities. *Our Framework / Our Theory* and *Roles Defined* (how it mixes MBTI-style acronyms with a different model and role groupings). ([16personalities.com](https://www.16personalities.com/articles/our-theory))

@@ -8,7 +8,7 @@ This project is shifting from a normal personality quiz into a **character/perso
 - **Style:** clean, official, utopian, respected (think: government/medical/enterprise UI, but friendly).
 - **Voice:** address the user as **Human** (or similar), like the system is speaking formally but not cold.
 - **Purpose (in-world):** this is the “standard tool” people use to set a robot’s personality profile in the future.
-- **Interaction (prototype):** text-only choices for now; images will be added later.
+- **Interaction (prototype):** text-only choices for now; additional UI visuals can be added later if needed.
 
 ---
 
@@ -108,10 +108,10 @@ This project is shifting from a normal personality quiz into a **character/perso
 **Layout:**
 - Header: **Personality Package Generated**
 - Featured block:
-  - Placeholder where famous-person image will go later
-  - For now, show a big label: **[MBTI CODE PLACEHOLDER]** (e.g., “INTJ”)
+  - Description-led personality summary
+  - Optional profile dossier formatting / spec block
 - Description block:
-  - For now, use the **short type description**.
+  - Use a custom personality description derived from the internally computed MBTI-style type.
 - Optional small “spec sheet” section:
   - 3–5 traits (short bullets)
   - “Recommended use cases” (playful but official)
@@ -138,7 +138,7 @@ This project is shifting from a normal personality quiz into a **character/perso
   - In prototype, this can download a JSON file that includes:
     - chosen options
     - computed scores
-    - final MBTI placeholder code
+    - internal personality type
     - timestamp/session id
 
 **Optional secondary action:**
@@ -149,9 +149,10 @@ This project is shifting from a normal personality quiz into a **character/perso
 
 ## Notes on scoring + output (placeholder rules)
 - For now, results will still compute a **4-letter MBTI-style code** internally.
-- The displayed “famous person match” will be added later; for now the results feature:
-  - **MBTI code placeholder** (as the “identity label”)
-  - The short description text for that type
+- The generated result shown to the user should avoid displaying the 4-letter code directly.
+- Instead, the results feature should present:
+  - a custom personality description
+  - an official-sounding profile summary / dossier tone
 
 ---
 

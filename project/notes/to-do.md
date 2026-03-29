@@ -6,8 +6,7 @@
 - [ ] Replace **"Human"** with **"You"** across the interface copy so the system addresses the user directly.
 - [ ] Review all question/result/install copy after the naming feature is added so the wording still reads naturally.
 
-## 2) Results System (Identity + Famous Match)
-- [ ] Add a **square result image** for each personality profile.
+## 2) Results System (Personality Output)
 - [ ] Expand each result into a fuller **profile dossier** with:
   - 3-5 trait bullets
   - recommended deployment contexts
@@ -15,10 +14,10 @@
 
 ## 3) UI + Visual Design (Utopian / Official)
 - [ ] Polish the question UI further so the choice cards feel more like premium configuration tiles.
-- [ ] Refine the results card once real images are added:
-  - portrait area
-  - match line + famous person
-  - two-paragraph summary + spec section
+- [ ] Refine the results card into a stronger text-led dossier layout:
+  - two-paragraph summary
+  - spec section
+  - clearer hierarchy for the personality write-up
 - [ ] Tidy the header/status-label styling if any other passive UI still looks clickable.
 
 ## 4) Animation (Motion = Authority)
@@ -46,7 +45,7 @@
 
 ## 7) Technical Structure / Cleanup
 - [ ] Keep a clear folder structure for assets:
-  - `/assets/results/` for portrait images
+  - `/assets/ui/` for optional interface graphics
   - `/assets/sfx/` for sound
 - [ ] Add graceful fallbacks if an image or sound is missing.
 - [ ] Remove outdated comments / notes in code that no longer match the current prototype.
