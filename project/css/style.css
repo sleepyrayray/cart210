@@ -124,10 +124,13 @@ canvas {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    width: min(100%, 600px);
     padding: 12px 14px;
     border: 1px solid var(--line);
     background: rgba(255, 255, 255, 0.04);
     border-radius: 14px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .spacer {
@@ -313,8 +316,8 @@ p {
 .options {
     margin-top: 18px;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
 }
 
 .option-card {
@@ -362,6 +365,10 @@ p {
     justify-content: flex-end;
 }
 
+.center-footer {
+    justify-content: center;
+}
+
 .small {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.70);
@@ -370,8 +377,14 @@ p {
 .profile-copy {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-width: 760px;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 22px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    text-align: center;
 }
 
 .profile-copy p {
@@ -379,8 +392,25 @@ p {
 }
 
 .profile-paragraph {
-    color: var(--muted);
-    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 16px;
+    line-height: 1.7;
+    text-wrap: pretty;
+}
+
+.profile-summary {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.profile-paragraph strong {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+@media (max-width: 760px) {
+    .options {
+        grid-template-columns: 1fr;
+    }
 }
 
 .kpi {
