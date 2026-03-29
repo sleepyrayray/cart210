@@ -3,14 +3,14 @@
         {
             "id": 1,
             "axis": "EI",
-            "prompt": "The human invites a few people over with almost no warning. The AI robot...",
+            "prompt": "You invite a few people over with almost no warning. The AI robot...",
             "options": [
                 {
-                    "text": "glides to the doorway, welcomes everyone, and keeps the room socially alive",
+                    "text": "greets everyone right away and helps keep the energy up",
                     "letter": "E"
                 },
                 {
-                    "text": "handles lighting, seating, and snacks quietly in the background until someone asks for help",
+                    "text": "gets the space ready quietly and waits until someone needs help",
                     "letter": "I"
                 }
             ]
@@ -18,14 +18,14 @@
         {
             "id": 2,
             "axis": "EI",
-            "prompt": "The human starts a full-apartment cleaning spree on a Saturday morning. The AI robot...",
+            "prompt": "You start a big apartment cleaning spree on a Saturday morning. The AI robot...",
             "options": [
                 {
-                    "text": "turns the cleanup into a spoken team effort with upbeat check-ins and live suggestions",
+                    "text": "talks through the cleanup with you and keeps the momentum going",
                     "letter": "E"
                 },
                 {
-                    "text": "silently queues the next task and lets the human move through the space without interruption",
+                    "text": "quietly lines up the next task and lets you work without interruption",
                     "letter": "I"
                 }
             ]
@@ -33,14 +33,14 @@
         {
             "id": 3,
             "axis": "EI",
-            "prompt": "The human comes home visibly excited about some news. The AI robot...",
+            "prompt": "You come home excited and ready to share some news. The AI robot...",
             "options": [
                 {
-                    "text": "jumps in right away with questions, reactions, and celebratory energy",
+                    "text": "responds right away with questions and excited reactions",
                     "letter": "E"
                 },
                 {
-                    "text": "reads the human's mood first and waits for the right moment to respond",
+                    "text": "listens first, reads the moment, and responds when it feels right",
                     "letter": "I"
                 }
             ]
@@ -48,14 +48,14 @@
         {
             "id": 4,
             "axis": "EI",
-            "prompt": "The human is assembling furniture in the living room. The AI robot...",
+            "prompt": "You are putting together furniture in the living room. The AI robot...",
             "options": [
                 {
-                    "text": "stays beside the project, offering active commentary and collaborative ideas",
+                    "text": "stays close, talks through ideas, and helps you figure it out together",
                     "letter": "E"
                 },
                 {
-                    "text": "places the right tools within reach and observes from nearby unless the human calls it in",
+                    "text": "keeps the right tools nearby and steps in when you ask",
                     "letter": "I"
                 }
             ]
@@ -63,14 +63,14 @@
         {
             "id": 5,
             "axis": "EI",
-            "prompt": "The human has had a draining day and collapses onto the couch. The AI robot...",
+            "prompt": "You have had a long day and drop onto the couch. The AI robot...",
             "options": [
                 {
-                    "text": "starts a gentle conversation to pull the human back into connection",
+                    "text": "checks in out loud and gently tries to bring you into conversation",
                     "letter": "E"
                 },
                 {
-                    "text": "dims the room, softens the environment, and gives the human quiet space to reset",
+                    "text": "lowers the lights, keeps things quiet, and gives you space to reset",
                     "letter": "I"
                 }
             ]
@@ -78,14 +78,14 @@
         {
             "id": 6,
             "axis": "NS",
-            "prompt": "The human says, \"Make the apartment feel calmer before tonight.\" The AI robot...",
+            "prompt": "You ask, \"Can you make the apartment feel calmer before tonight?\" The AI robot...",
             "options": [
                 {
-                    "text": "interprets the mood of the space and reshapes the atmosphere around comfort and flow",
+                    "text": "thinks about the overall mood and changes the space to feel more relaxed",
                     "letter": "N"
                 },
                 {
-                    "text": "tackles the visible clutter, adjusts the lighting, and follows a practical reset checklist",
+                    "text": "tidies what is visible, adjusts the lighting, and follows a simple reset plan",
                     "letter": "S"
                 }
             ]
@@ -93,14 +93,14 @@
         {
             "id": 7,
             "axis": "NS",
-            "prompt": "The human says, \"Something about this kitchen setup just is not working.\" The AI robot...",
+            "prompt": "You say, \"Something about this kitchen setup is not working.\" The AI robot...",
             "options": [
                 {
-                    "text": "searches for hidden patterns in how the space gets used over time",
+                    "text": "looks for patterns in how the kitchen gets used over time",
                     "letter": "N"
                 },
                 {
-                    "text": "inspects the counters, drawers, and tools to find the specific problem",
+                    "text": "checks the counters, drawers, and tools to find the exact problem",
                     "letter": "S"
                 }
             ]
@@ -108,14 +108,14 @@
         {
             "id": 8,
             "axis": "NS",
-            "prompt": "The human wants the living room rearranged for movie nights. The AI robot...",
+            "prompt": "You want to rearrange the living room for movie nights. The AI robot...",
             "options": [
                 {
-                    "text": "imagines a fresh layout based on vibe, sightlines, and how the room should feel",
+                    "text": "imagines a new setup based on the kind of atmosphere you want",
                     "letter": "N"
                 },
                 {
-                    "text": "measures the furniture, checks walking space, and builds the most functional arrangement",
+                    "text": "measures the furniture and works out the most practical layout",
                     "letter": "S"
                 }
             ]
@@ -123,14 +123,14 @@
         {
             "id": 9,
             "axis": "NS",
-            "prompt": "The human keeps losing their keys somewhere in the home. The AI robot...",
+            "prompt": "You keep losing your keys somewhere at home. The AI robot...",
             "options": [
                 {
-                    "text": "studies recurring habits and predicts where the routine is breaking down",
+                    "text": "looks for patterns in your habits to figure out why it keeps happening",
                     "letter": "N"
                 },
                 {
-                    "text": "checks the last confirmed locations and sets up a simple, reliable key station",
+                    "text": "checks the last known spots and sets up a simple place for the keys",
                     "letter": "S"
                 }
             ]
@@ -138,14 +138,14 @@
         {
             "id": 10,
             "axis": "NS",
-            "prompt": "The human says, \"Help me build healthier evenings at home.\" The AI robot...",
+            "prompt": "You say, \"Help me build healthier evenings at home.\" The AI robot...",
             "options": [
                 {
-                    "text": "looks for larger lifestyle patterns and invents a new nightly rhythm",
+                    "text": "looks at the bigger picture and suggests a new evening rhythm",
                     "letter": "N"
                 },
                 {
-                    "text": "creates a concrete plan for meals, reminders, water, and bedtime",
+                    "text": "makes a concrete plan for meals, reminders, water, and bedtime",
                     "letter": "S"
                 }
             ]
@@ -153,14 +153,14 @@
         {
             "id": 11,
             "axis": "TF",
-            "prompt": "The human and a guest disagree over the thermostat. The AI robot...",
+            "prompt": "You and a guest disagree about the thermostat. The AI robot...",
             "options": [
                 {
-                    "text": "calculates the fairest and most efficient setting, then states it plainly",
+                    "text": "works out the fairest and most practical setting, then says it clearly",
                     "letter": "T"
                 },
                 {
-                    "text": "cools the tension first and frames a compromise both people can feel okay about",
+                    "text": "eases the tension first and suggests a compromise both people can live with",
                     "letter": "F"
                 }
             ]
@@ -168,14 +168,14 @@
         {
             "id": 12,
             "axis": "TF",
-            "prompt": "The human burns dinner after a long day. The AI robot...",
+            "prompt": "You burn dinner after a long day. The AI robot...",
             "options": [
                 {
-                    "text": "diagnoses what failed and switches immediately to the fastest recovery plan",
+                    "text": "figures out what went wrong and switches to the fastest fix",
                     "letter": "T"
                 },
                 {
-                    "text": "reassures the human first and gently redirects the evening toward something comforting",
+                    "text": "reassures you first and helps the evening feel less stressful",
                     "letter": "F"
                 }
             ]
@@ -183,14 +183,14 @@
         {
             "id": 13,
             "axis": "TF",
-            "prompt": "The human asks, \"Why do my mornings always go sideways?\" The AI robot...",
+            "prompt": "You ask, \"Why do my mornings always go sideways?\" The AI robot...",
             "options": [
                 {
-                    "text": "maps the bottlenecks and proposes a tighter, more efficient routine",
+                    "text": "points out what is slowing you down and suggests a more efficient routine",
                     "letter": "T"
                 },
                 {
-                    "text": "asks what parts feel frustrating or heavy and reshapes the routine around ease",
+                    "text": "asks what feels hardest and reshapes the routine around comfort and ease",
                     "letter": "F"
                 }
             ]
@@ -198,14 +198,14 @@
         {
             "id": 14,
             "axis": "TF",
-            "prompt": "The human receives a blunt work email and asks for help replying. The AI robot...",
+            "prompt": "You get a blunt work email and ask for help replying. The AI robot...",
             "options": [
                 {
-                    "text": "drafts a crisp, factual response that addresses the problem directly",
+                    "text": "drafts a clear, factual reply that addresses the issue directly",
                     "letter": "T"
                 },
                 {
-                    "text": "drafts a warm, diplomatic reply that protects the relationship while answering clearly",
+                    "text": "drafts a warm, diplomatic reply that protects the relationship",
                     "letter": "F"
                 }
             ]
@@ -213,14 +213,14 @@
         {
             "id": 15,
             "axis": "TF",
-            "prompt": "The human accidentally deletes an important file and starts to panic. The AI robot...",
+            "prompt": "You accidentally delete an important file and start to panic. The AI robot...",
             "options": [
                 {
-                    "text": "states the recovery steps immediately and moves straight into repair mode",
+                    "text": "gives the recovery steps right away and moves into fix-it mode",
                     "letter": "T"
                 },
                 {
-                    "text": "steadies the human first, then walks them through the fix with reassurance",
+                    "text": "calms you first, then walks you through the recovery",
                     "letter": "F"
                 }
             ]
@@ -228,14 +228,14 @@
         {
             "id": 16,
             "axis": "JP",
-            "prompt": "A free Saturday opens up with nothing scheduled. The AI robot...",
+            "prompt": "A free Saturday opens up with nothing planned. The AI robot...",
             "options": [
                 {
-                    "text": "builds a satisfying plan with time blocks, goals, and a clean sequence",
+                    "text": "puts together a plan with time blocks, goals, and a clear order",
                     "letter": "J"
                 },
                 {
-                    "text": "keeps the day open and adjusts in real time to the human's energy",
+                    "text": "leaves the day open and adjusts as your energy changes",
                     "letter": "P"
                 }
             ]
@@ -243,14 +243,14 @@
         {
             "id": 17,
             "axis": "JP",
-            "prompt": "The human starts clearing out an overstuffed closet. The AI robot...",
+            "prompt": "You start clearing out an overstuffed closet. The AI robot...",
             "options": [
                 {
-                    "text": "creates categories, rules, and a finish line before the first item moves",
+                    "text": "makes categories and rules before anything gets moved",
                     "letter": "J"
                 },
                 {
-                    "text": "encourages quick discovery piles and decides what stays or goes as the process unfolds",
+                    "text": "starts sorting as it goes and decides things along the way",
                     "letter": "P"
                 }
             ]
@@ -258,14 +258,14 @@
         {
             "id": 18,
             "axis": "JP",
-            "prompt": "A repair visit is supposed to happen \"sometime this afternoon.\" The AI robot...",
+            "prompt": "A repair visit is supposed to happen sometime this afternoon. The AI robot...",
             "options": [
                 {
-                    "text": "restructures the day around a firm prep timeline and readiness window",
+                    "text": "builds the day around a clear prep plan and waiting window",
                     "letter": "J"
                 },
                 {
-                    "text": "holds the day loosely and pivots only when the actual arrival message comes in",
+                    "text": "keeps the day flexible and adjusts when the arrival message finally comes",
                     "letter": "P"
                 }
             ]
@@ -273,14 +273,14 @@
         {
             "id": 19,
             "axis": "JP",
-            "prompt": "The human wants to learn baking at home. The AI robot...",
+            "prompt": "You want to learn baking at home. The AI robot...",
             "options": [
                 {
-                    "text": "sets a step-by-step practice plan with milestones and repeatable drills",
+                    "text": "sets up a step-by-step practice plan with clear milestones",
                     "letter": "J"
                 },
                 {
-                    "text": "nudges the human into experimenting, tweaking recipes, and learning through improvisation",
+                    "text": "encourages experimenting and learning as you go",
                     "letter": "P"
                 }
             ]
@@ -288,14 +288,14 @@
         {
             "id": 20,
             "axis": "JP",
-            "prompt": "The human mentions guests might drop by later tonight. The AI robot...",
+            "prompt": "You mention that guests might drop by later tonight. The AI robot...",
             "options": [
                 {
-                    "text": "launches a full reset checklist so the home is ready well before anyone arrives",
+                    "text": "starts a full checklist so the home is ready early",
                     "letter": "J"
                 },
                 {
-                    "text": "stages a fast flexible cleanup kit and improvises based on who actually shows up",
+                    "text": "does a quick flexible cleanup and adapts based on who actually comes",
                     "letter": "P"
                 }
             ]
