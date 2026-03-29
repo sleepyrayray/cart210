@@ -423,7 +423,7 @@ function renderInstalling() {
     state = "installing";
     clearUI();
 
-    const panel = buildPanel("Transferrung Personality Package", "", "Wireless Installation In Progress");
+    const panel = buildPanel("Transferring Personality Package", "", "Wireless Installation In Progress");
     const body = panel.body;
 
     createP("Sending the selected personality profile to the AI robot over a secure wireless transfer...").parent(body);

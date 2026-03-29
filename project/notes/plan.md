@@ -78,7 +78,7 @@ Purpose:
 - simulate sending the selected personality package to the robot
 
 Current behavior:
-- Title: `Transferrung Personality Package`
+- Title: `Transferring Personality Package`
 - Slower loading bar than the compile screen
 - No task list on this screen
 - The transfer is framed as a wireless installation process
