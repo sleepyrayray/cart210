@@ -152,7 +152,7 @@ function initTitle() {
     const body = panel.body;
 
     const intro = createDiv("").addClass("title-copy").parent(body);
-    createDiv("Welcome, Human.").addClass("title-greeting").parent(intro);
+    createP("Welcome, Human.").addClass("title-intro").parent(intro);
     createP("This software is used to configure a personality profile for an AI robot.")
         .addClass("title-intro")
         .parent(intro);
@@ -183,11 +183,9 @@ function initTitle() {
         "I understand this system will compile a personality package based on my selections."
     ).parent(acknowledgeWrap);
 
-    const footer = createDiv("").addClass("footer").parent(body);
+    const footer = createDiv("").addClass("footer title-footer").parent(body);
 
     titleStartBtn = createButton("Start Configuration").addClass("btn primary").parent(footer);
-
-    createDiv("Human access verified upon confirmation.").addClass("small").parent(footer);
 
     function updateTitleStartState() {
         const canStart = consentCheckboxAuth.checked() && consentCheckboxAcknowledge.checked();
@@ -256,7 +254,7 @@ function renderQuestion() {
 
     const q = questions[currentIndex];
 
-    const panel = buildPanel("AI Personality Builder", "Human: Configuration Session", "Personality Profile Setup");
+    const panel = buildPanel("AI Personality Builder", "", "AI Personality Profile Setup");
     const body = panel.body;
 
     // progress
@@ -267,9 +265,18 @@ function renderQuestion() {
     const pct = (currentIndex / questions.length) * 100;
     fill.style("width", `${pct}%`);
 
-    createDiv(`Step ${currentIndex + 1} / ${questions.length}`).addClass("label").parent(prog);
+    createDiv(`${currentIndex + 1} / ${questions.length}`).addClass("label").parent(prog);
 
-    createDiv(q.prompt).addClass("question").parent(body);
+    const questionWrap = createDiv("").addClass("question").parent(body);
+    const robotMarker = " The AI robot...";
+    const markerIndex = q.prompt.lastIndexOf(robotMarker);
+
+    if (markerIndex !== -1) {
+        createDiv(q.prompt.slice(0, markerIndex).trim()).addClass("question-main").parent(questionWrap);
+        createDiv("The AI robot...").addClass("question-robot").parent(questionWrap);
+    } else {
+        createDiv(q.prompt).addClass("question-main").parent(questionWrap);
+    }
 
     const opts = createDiv("").addClass("options").parent(body);
 
@@ -290,8 +297,12 @@ function renderQuestion() {
 
     const footer = createDiv("").addClass("footer").parent(body);
 
-    const backBtn = createButton("Back").addClass("btn").parent(footer);
-    if (currentIndex === 0) backBtn.attribute("disabled", "true");
+    let backBtn = null;
+    if (currentIndex > 0) {
+        backBtn = createButton("Back").addClass("btn").parent(footer);
+    } else {
+        createDiv("").parent(footer);
+    }
 
     const right = createDiv("").addClass("row").parent(footer);
 
@@ -301,12 +312,12 @@ function renderQuestion() {
 
     if (!selections[currentIndex]) nextBtn.attribute("disabled", "true");
 
-    backBtn.mousePressed(() => {
-        if (currentIndex > 0) {
+    if (backBtn) {
+        backBtn.mousePressed(() => {
             currentIndex--;
             renderQuestion();
-        }
-    });
+        });
+    }
 
     nextBtn.mousePressed(() => {
         if (!selections[currentIndex]) return;
