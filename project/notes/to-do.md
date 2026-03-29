@@ -1,72 +1,42 @@
-# AI Robot Personality Builder — Project To-Do List (Update)
+# AI Personality Builder — Remaining To-Do
 
-## 1) Personalization + Core Flow
-- [ ] Add a setup step where the user enters the **name of their AI robot** before starting the questionnaire.
-- [ ] Use the robot's name throughout the 20 prompts instead of the generic phrase **"AI robot."**
-- [ ] Replace **"Human"** with **"You"** across the interface copy so the system addresses the user directly.
-- [ ] Review all question/result/install copy after the naming feature is added so the wording still reads naturally.
+This list only includes work that is still left.
 
-## 2) Results System (Personality Output)
-- [ ] Expand each result into a fuller **profile dossier** with:
-  - 3-5 trait bullets
-  - recommended deployment contexts
-  - optional risk / caution note
+## Highest Priority
+- [ ] Add a setup step where the user enters the name of their AI robot before the questionnaire starts.
+- [ ] Replace the generic phrase `AI robot` with that chosen robot name across the question, result, transfer, and completion screens.
+- [ ] Re-check all copy after the naming feature is wired in so every sentence still reads naturally.
 
-## 3) UI + Visual Design (Utopian / Official)
-- [ ] Polish the question UI further so the choice cards feel more like premium configuration tiles.
-- [ ] Refine the results card into a stronger text-led dossier layout:
-  - two-paragraph summary
-  - spec section
-  - clearer hierarchy for the personality write-up
-- [ ] Tidy the header/status-label styling if any other passive UI still looks clickable.
+Constraint for that work:
+- Keep `Human` as the system label for the user so the software stays detached and dystopian.
 
-## 4) Animation (Motion = Authority)
-- [ ] Add a **smooth transition** between major screens (fade, slide, or dissolve).
-- [ ] Add micro-animations:
-  - option selection confirm pulse
-  - progress bar easing
-  - more subtle movement on the processing / transfer screens
-- [ ] Add a small “system status” animation (spinner, scan line, or signal pulse).
+## Sound
+- [ ] Add click sounds for interaction moments.
+- [ ] Add a heartbeat sound on the results screen so it feels like the robot is now "alive" with a personality.
+- [ ] Add a mute toggle that fits the current interface.
 
-## 5) Sound (Optional, but powerful)
-- [ ] Add a minimal, clean sound set:
-  - hover/select click
-  - next/confirm
-  - processing/transfer tone
-  - result reveal tone
-- [ ] Add a mute toggle that feels consistent with the current UI.
+## QA + Cleanup
+- [ ] Test the full flow in the browser on both desktop and mobile widths.
+- [ ] Check question-card wrapping and spacing after the naming feature is added.
+- [ ] Remove outdated code comments or leftover dev notes that no longer match the current prototype.
+- [ ] Do one final consistency pass on button labels, headings, and status text.
 
-## 6) Data Package Screen (Official Finish)
-- [ ] Upgrade the final delivery screen with:
-  - package ID
-  - checksum verified
-  - install status: complete
-- [ ] (Optional) Show a JSON-like preview of the installed package contents.
+## Optional Upgrades
+- [ ] Expand the results into a fuller dossier with trait bullets or system specs.
+- [ ] Add subtle screen transitions or micro-animations.
+- [ ] Add package metadata on the completion screen, such as package ID or verification details.
 
-## 7) Technical Structure / Cleanup
-- [ ] Keep a clear folder structure for assets:
-  - `/assets/ui/` for optional interface graphics
-  - `/assets/sfx/` for sound
-- [ ] Add graceful fallbacks if an image or sound is missing.
-- [ ] Remove outdated comments / notes in code that no longer match the current prototype.
-
-## 8) Extra Ideas (If you want to push it further)
-- [ ] Add a “Calibration mode” before the quiz to choose robot context:
-  - companion
-  - assistant
-  - security
-  - artist
-  - etc.
-- [ ] Add a “Build another AI robot” history panel for the current session.
-- [ ] Add a short “ethics toggle” setting: transparency vs minimal disclosure.
-- [ ] Add an official certificate / stamp generated at the end.
-
-## 9) Writing for Final Submission (Later)
-- [ ] Draft artist statement (250-300+ words) connecting privacy + voice + agency to the personality-builder concept.
-- [ ] Start annotated bibliography (5+ sources, 3-sentence annotations).
-- [ ] Outline a 5-10 minute presentation structure (problem -> concept -> demo -> process -> reflection).
+## Later Submission Tasks
+- [ ] Draft the artist statement.
+- [ ] Build the annotated bibliography.
+- [ ] Outline the final presentation / demo flow.
 
 ---
 
-### Immediate next step (recommended)
-- [ ] Implement the **robot naming step** and wire that name through the questionnaire, results screen, transfer screen, and final installation screen.
+### Verified answer to “what is left?”
+The main required app work left is:
+1. robot naming
+2. sounds
+3. a final browser QA + cleanup pass
+
+Everything else is optional polish or class-submission work.

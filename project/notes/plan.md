@@ -1,174 +1,118 @@
-# Quiz Flow + UI Plan (Prototype → “AI Robot Personality Builder”)
+# AI Personality Builder — Current Flow Plan
 
-This project is shifting from a normal personality quiz into a **character/personality builder**: a sleek, official-looking interface where a *human* configures a personality profile for an AI robot. The system collects selections, generates a “personality package,” and outputs a downloadable (fake) data file meant to be “loaded” into the robot.
+This document reflects the current prototype as it exists now, not the older modal / celebrity-match version.
 
----
+## Core Concept
+The project presents itself as an official interface for configuring a personality profile for an AI robot. The user answers 20 short either/or prompts, the system compiles a personality package, and the package is then "installed" into the robot through a staged software workflow.
 
-## Overall tone + design direction
-- **Style:** clean, official, utopian, respected (think: government/medical/enterprise UI, but friendly).
-- **Voice:** address the user as **Human** (or similar), like the system is speaking formally but not cold.
-- **Purpose (in-world):** this is the “standard tool” people use to set a robot’s personality profile in the future.
-- **Interaction (prototype):** text-only choices for now; additional UI visuals can be added later if needed.
+The tone should feel:
+- official
+- clean
+- professional
+- easy to understand
+- slightly unsettling because the system sounds very sure of itself
 
----
+## Current Voice + Writing Direction
+- The app should feel formal, but not cold.
+- The writing should be beginner-friendly and easy to scan.
+- The prompts should sound natural, not robotic.
+- The system still uses the phrase `AI robot` in the live build, but the long-term direction is to replace that with a user-entered robot name.
+- The interface should keep calling the user `Human` in the system framing. That distance is intentional and supports the dystopian concept.
+- The app should care more about configuring the robot than validating the person using it.
 
-## Global behavior rules
-- **Randomize question order** each run.
-- **Randomize option A/B order** per question (so the same personality doesn’t always map to left or right).
-- **Two-choice prompts** (BuzzFeed-style, fun), but framed as “personality parameters” for a robot.
-- This is less a quiz and more a **personality configuration workflow**.
+## Current Screen Flow
 
----
+### 1) Landing / Consent Screen
+Purpose:
+- explain what the software does
+- establish the official system tone
+- require user confirmation before beginning
 
-## Screen Flow (State Machine)
+Current behavior:
+- Title: `AI Personality Builder`
+- Inline explanation is shown directly on the page
+- Two checkboxes must both be checked before the start button activates
+- Start button is centered
 
-### 1) Title / Landing Screen (with gated consent)
-**Goal:** establish the official “robot personality builder” premise and require consent.
+### 2) Question Screen
+Purpose:
+- let the user configure the robot through 20 binary selections
 
-**Layout:**
-- Header: **AI Personality Builder**
-- Subheader: “Welcome, Human.”
-- Short description: “Configure a personality package for your AI unit using 20 selections.”
+Current behavior:
+- Header badge: `AI Personality Profile Setup`
+- Progress bar and question counter
+- Question text is centered
+- The phrase `The AI robot...` appears on its own line inside the prompt
+- Two option cards appear side by side
+- Back button is hidden on the first question
+- Next button stays disabled until an option is selected
 
-**Controls:**
-- Button: **What is this?** (opens modal/overlay)
-- Checkbox (required):  
-  - “I understand this tool collects my selections to generate a personality package for an AI unit.”
-- Button: **Start Configuration**
-  - **Disabled** until checkbox is checked.
+### 3) Compiling Screen
+Purpose:
+- make the system feel like it is formally analyzing the configuration
 
-**Notes:**
-- Instructions will live inside **What is this?** (no separate instructions screen).
+Current behavior:
+- Title: `Compiling Personality Package`
+- Visible loading bar and percentage
+- Task lines update one at a time
+- The status message changes when compiling is complete
+- `View Results` becomes available at the end
 
----
+### 4) Results Screen
+Purpose:
+- present the generated personality in a polished but readable way
 
-### 2) “What is this?” Modal / Overlay (includes instructions)
-**Goal:** explain the tool in a friendly, official way and clarify how it works.
+Current behavior:
+- Title: `Personality Package Generated`
+- One centered result container
+- Two-paragraph personality write-up
+- Key trait words are visually emphasized
+- No visible MBTI code
+- No celebrity / famous-person comparison
+- Buttons:
+  - `Reconfigure`
+  - `Install Personality`
 
-**Content (example sections):**
-- “This interface helps Humans configure an AI unit’s personality profile.”
-- “You will make 20 selections. Each choice adjusts personality parameters.”
-- “At the end, the system generates a personality profile and a downloadable data package (simulation).”
-- “This is a prototype for an artwork / concept system.” *(optional, depending on how “in-world” you want it to feel)*
+### 5) Transfer / Installation Screen
+Purpose:
+- simulate sending the selected personality package to the robot
 
-**Controls:**
-- Button: **Close**
+Current behavior:
+- Title: `Transferrung Personality Package`
+- Slower loading bar than the compile screen
+- No task list on this screen
+- The transfer is framed as a wireless installation process
 
----
+### 6) Installation Complete Screen
+Purpose:
+- close the workflow cleanly
 
-### 3) Configuration Screen (Questions)
-**Goal:** allow the Human to set the robot’s personality via 20 two-choice prompts.
+Current behavior:
+- Title: `Installation Complete`
+- Short confirmation message
+- `Congratulations, Human.` line above the message
+- Single centered `Return to Home` button
+- No status cards / KPI blocks
 
-**Layout:**
-- Top bar:
-  - “Human: Configuration Session”
-  - Progress indicator: **Step X / 20**
-  - Progress bar (simple and clean)
+## Global System Rules
+- Question order is randomized at the start of each session
+- Option order is randomized per question
+- The scoring still uses MBTI-style internal axes:
+  - `E / I`
+  - `N / S`
+  - `T / F`
+  - `J / P`
+- The 4-letter result is used internally only
 
-- Center:
-  - Prompt text (the “parameter prompt”)
-  - Two large choice panels/buttons (text-only for prototype)
+## Verified Next Steps
+- Add a robot naming step before the questionnaire
+- Use that name in place of `AI robot` across the app
+- Add click sounds throughout the flow
+- Add a heartbeat sound on the results screen so the robot feels newly "alive"
+- Do a final cross-screen copy pass after naming is implemented
+- Run a browser QA pass for spacing, wrapping, and mobile layout
 
-- Bottom bar:
-  - **Back** button
-  - **Next** button
-
-**Behavior:**
-- The Human can select an option, then click **Next**.
-- **Next** is disabled until a selection is made.
-- **Back** goes to the previous prompt and preserves the previous selection.
-
-**Randomization:**
-- Questions are shuffled at the beginning of each run.
-- Option ordering is randomized per question (A/B can swap), but the scoring mapping swaps with it.
-
----
-
-### 4) Processing Screen (system analysis)
-**Goal:** dramatize “official computation” and make it feel like a real tool.
-
-**Behavior:**
-- No click-to-continue.
-- A short timed sequence (e.g., 2–4 seconds), then transitions to results.
-
-**UI:**
-- “Analyzing configuration…”
-- “Generating personality package…”
-- “Compiling profile…”
-- Optional clean loading indicator (bar/spinner)
-
-**Controls:**
-- Button appears at the end: **View Results**
-
----
-
-### 5) Results Screen (personality output)
-**Goal:** present the generated “personality profile” as if it’s a final configuration for the robot.
-
-**Layout:**
-- Header: **Personality Package Generated**
-- Featured block:
-  - Description-led personality summary
-  - Optional profile dossier formatting / spec block
-- Description block:
-  - Use a custom personality description derived from the internally computed MBTI-style type.
-- Optional small “spec sheet” section:
-  - 3–5 traits (short bullets)
-  - “Recommended use cases” (playful but official)
-
-**Buttons:**
-- **I accept — install this personality**
-- **I refuse — reconfigure (retake)**
-
-**Notes:**
-- “Accept” should feel like committing to a robot personality.
-- “Refuse” loops back to the start (or question screen) and reshuffles.
-
----
-
-### 6) Download Screen / Data Package Export (fake download)
-**Goal:** simulate exporting the “data collected” as a file to load into the AI robot.
-
-**Triggered by:** pressing **I accept — install this personality**
-
-**UI elements:**
-- “Preparing export…”
-- “Personality package ready.”
-- Button: **Download Personality Package (.json)** *(simulation)*  
-  - In prototype, this can download a JSON file that includes:
-    - chosen options
-    - computed scores
-    - internal personality type
-    - timestamp/session id
-
-**Optional secondary action:**
-- Button: **Return to Home**
-- Button: **Configure Another Unit**
-
----
-
-## Notes on scoring + output (placeholder rules)
-- For now, results will still compute a **4-letter MBTI-style code** internally.
-- The generated result shown to the user should avoid displaying the 4-letter code directly.
-- Instead, the results feature should present:
-  - a custom personality description
-  - an official-sounding profile summary / dossier tone
-
----
-
-## Implementation plan (what we code next)
-1) Create a **state machine** for screens:
-   - `state = "title" | "modal" | "question" | "processing" | "results" | "download"`
-2) Add quiz data structure:
-   - 20 prompts
-   - each prompt has 2 options + axis scoring
-3) Add shuffle logic:
-   - shuffle question order on start
-   - randomize option order per question
-4) Implement UI components:
-   - checkbox gating Start
-   - modal overlay
-   - back/next navigation with stored selections
-   - processing timer + “View Results”
-   - results screen with accept/refuse actions
-   - fake JSON download when accepted
+## Optional Upgrades Later
+- Expand the result into a fuller dossier with trait bullets or system specs
+- Add subtle transitions or interface motion
+- Add package metadata to the completion screen
