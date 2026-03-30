@@ -124,7 +124,9 @@ canvas {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    width: min(100%, 600px);
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
     padding: 12px 14px;
     border: 1px solid var(--line);
     background: rgba(255, 255, 255, 0.04);
