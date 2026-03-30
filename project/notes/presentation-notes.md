@@ -1,5 +1,9 @@
 # AI Personality Builder - Prototype Presentation Notes
 
+## Short project description
+
+**AI Personality Builder** is an interactive prototype that looks like official software for giving an AI robot a personality. The user answers 20 short questions, the system generates a personality profile, and then it "installs" that personality into the robot.
+
 ## What it is
 
 My project is called **AI Personality Builder**. It is an interactive p5.js prototype that looks like an official software tool for configuring the personality of an AI robot.
@@ -7,8 +11,6 @@ My project is called **AI Personality Builder**. It is an interactive p5.js prot
 The user goes through a guided setup, answers 20 short questions, and then the system compiles and installs a personality package into the robot.
 
 ## Connection to the prompt
-
-For the final project, we were asked to imagine y/our pluriverse through new media.
 
 My project responds to the concept of pluriverse by showing the opposite idea: a future where software feels helpful and efficient, but quietly reduces identity into data and fixed categories.
 
