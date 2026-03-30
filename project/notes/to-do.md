@@ -3,8 +3,8 @@
 This list only includes work that is still left.
 
 ## Highest Priority
-- [ ] Add a setup step where the user enters the name of their AI robot before the questionnaire starts.
-- [ ] Replace the generic phrase `AI robot` with that chosen robot name across the question, result, transfer, and completion screens.
+- [ ] Add a setup step where the user enters the name of their AI robot before the scenario flow starts.
+- [ ] Replace the generic phrase `AI robot` with that chosen robot name across the scenario, result, transfer, and completion screens.
 - [ ] Re-check all copy after the naming feature is wired in so every sentence still reads naturally.
 
 Constraint for that work:
@@ -17,7 +17,7 @@ Constraint for that work:
 
 ## QA + Cleanup
 - [ ] Test the full flow in the browser on both desktop and mobile widths.
-- [ ] Check question-card wrapping and spacing after the naming feature is added.
+- [ ] Check scenario-card wrapping and spacing after the naming feature is added.
 - [ ] Remove outdated code comments or leftover dev notes that no longer match the current prototype.
 - [ ] Do one final consistency pass on button labels, headings, and status text.
 

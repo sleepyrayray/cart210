@@ -9,10 +9,10 @@ The project borrows the structure and authority of MBTI-style quizzes, but uses 
 ## Current Prototype Features
 - Landing screen with an inline description of the software
 - Two required consent checkboxes before the configuration can begin
-- 20 scenario-based prompts loaded from `data/questions.json`
-- Natural `You ... The AI robot...` question wording
+- 20 short scenarios loaded from `data/questions.json`
+- Natural scenario wording using `You ... The AI robot...`
 - Formal system voice that still refers to the user as `Human`
-- Randomized question order and randomized option order on each run
+- Randomized scenario order and randomized option order on each run
 - Back/Next navigation with stored selections
 - Compile screen with a loading bar, staged system tasks, and a completion status message
 - Results screen with a description-only personality output
@@ -23,7 +23,7 @@ The project borrows the structure and authority of MBTI-style quizzes, but uses 
 
 ## Current App Flow
 1. Landing / consent
-2. 20-question configuration
+2. 20-scenario configuration
 3. Compiling Personality Package
 4. Personality Package Generated
 5. Wireless personality transfer
@@ -32,13 +32,13 @@ The project borrows the structure and authority of MBTI-style quizzes, but uses 
 ## Tech Stack
 - p5.js for canvas and DOM UI
 - HTML/CSS for layout and styling
-- JSON for the question bank
+- JSON for the scenario bank
 
 ## Project Structure
 - `index.html` main page
 - `css/style.css` interface styling
 - `js/script.js` application logic
-- `data/questions.json` question bank
+- `data/questions.json` scenario bank
 - `notes/` planning, research, and writing notes
 
 ## How To Run
@@ -55,7 +55,7 @@ Option 2: Python
 ## Verified Remaining Work
 - Add click sounds and a heartbeat sound on the results screen, plus a mute toggle
 - Ask for the robot's name before the quiz starts
-- Use that robot name throughout the question, result, transfer, and completion screens
+- Use that robot name throughout the scenario, result, transfer, and completion screens
 - Do a browser QA pass on desktop and mobile after the naming feature is added
 - Clean outdated comments or leftover dev notes in the code
 

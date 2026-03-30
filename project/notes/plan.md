@@ -34,17 +34,17 @@ Current behavior:
 - Two checkboxes must both be checked before the start button activates
 - Start button is centered
 
-### 2) Question Screen
+### 2) Scenario Screen
 Purpose:
-- let the user configure the robot through 20 binary selections
+- let the user configure the robot through 20 short scenarios
 
 Current behavior:
 - Header badge: `AI Personality Profile Setup`
-- Progress bar and question counter
-- Question text is centered
+- Progress bar and scenario counter
+- Scenario text is centered
 - The phrase `The AI robot...` appears on its own line inside the prompt
 - Two option cards appear side by side
-- Back button is hidden on the first question
+- Back button is hidden on the first scenario
 - Next button stays disabled until an option is selected
 
 ### 3) Compiling Screen
@@ -95,8 +95,8 @@ Current behavior:
 - No status cards / KPI blocks
 
 ## Global System Rules
-- Question order is randomized at the start of each session
-- Option order is randomized per question
+- Scenario order is randomized at the start of each session
+- Option order is randomized per scenario
 - The scoring still uses MBTI-style internal axes:
   - `E / I`
   - `N / S`
@@ -105,7 +105,7 @@ Current behavior:
 - The 4-letter result is used internally only
 
 ## Verified Next Steps
-- Add a robot naming step before the questionnaire
+- Add a robot naming step before the scenario flow
 - Use that name in place of `AI robot` across the app
 - Add click sounds throughout the flow
 - Add a heartbeat sound on the results screen so the robot feels newly "alive"

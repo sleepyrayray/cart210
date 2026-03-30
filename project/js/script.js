@@ -161,10 +161,10 @@ function initTitle() {
     createP("This software is used to configure a personality profile for an AI robot.")
         .addClass("title-intro")
         .parent(intro);
-    createP("You will answer 20 short questions. Each choice helps the system decide how the robot should generally respond, communicate, and behave.")
+    createP("You will move through 20 short scenarios. Each choice helps the system decide how the robot should generally respond, communicate, and behave.")
         .addClass("title-intro")
         .parent(intro);
-    createP("You can move backward or forward during the setup before you finish. After the questions are complete, the system generates a personality description and prepares it for installation.")
+    createP("You can move backward or forward during the setup before you finish. After the scenarios are complete, the system generates a personality description and prepares it for installation.")
         .addClass("title-intro")
         .parent(intro);
 

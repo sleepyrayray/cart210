@@ -2,13 +2,13 @@
 
 ## Short project description
 
-**AI Personality Builder** is an interactive prototype that looks like official software for giving an AI robot a personality. The user answers 20 short questions, the system generates a personality profile, and then it "installs" that personality into the robot.
+**AI Personality Builder** is an interactive prototype that looks like official software for giving an AI robot a personality. The user moves through 20 short scenarios, the system generates a personality profile, and then it "installs" that personality into the robot.
 
 ## What it is
 
 My project is called **AI Personality Builder**. It is an interactive p5.js prototype that looks like an official software tool for configuring the personality of an AI robot.
 
-The user goes through a guided setup, answers 20 short questions, and then the system compiles and installs a personality package into the robot.
+The user goes through a guided setup, moves through 20 short scenarios, and then the system compiles and installs a personality package into the robot.
 
 ## Connection to the prompt
 
@@ -45,7 +45,7 @@ But underneath that, it becomes a critique of how digital systems classify peopl
 
 ## How it works
 
-The prototype starts with a landing and consent screen. After that, the user moves through 20 scenario-based questions, each with two possible behaviors for the AI robot.
+The prototype starts with a landing and consent screen. After that, the user moves through 20 short scenarios, each with two possible behaviors for the AI robot.
 
 Behind the scenes, the answers still map to MBTI-style personality axes, but the result does not show the four-letter code directly. Instead, it gives a written personality description.
 
@@ -55,7 +55,7 @@ Then the user can choose to install that personality that's been generated, and 
 
 I made the project as a browser-based interactive prototype using **p5.js**, HTML, CSS, and JSON.
 
-The process included researching MBTI and critiques of personality testing, writing the set of questions, and designing the interface to feel legit, official, and somewhat dystopian.
+The process included researching MBTI and critiques of personality testing, writing the set of scenarios, and designing the interface to feel legit, official, and somewhat dystopian.
 
 I chose this medium because the message depends on the interface itself. Moving through the software is part of the critique.
 
