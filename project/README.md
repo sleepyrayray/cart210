@@ -53,6 +53,7 @@ Option 2: Python
 - Open the local URL in your browser
 
 ## Verified Remaining Work
+- Add a short intro animation before the landing screen, with the title appearing first and the main container opening after it
 - Add click sounds and a heartbeat sound on the results screen, plus a mute toggle
 - Ask for the robot's name before the quiz starts
 - Use that robot name throughout the scenario, result, transfer, and completion screens

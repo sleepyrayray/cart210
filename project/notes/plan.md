@@ -22,6 +22,17 @@ The tone should feel:
 
 ## Current Screen Flow
 
+### 0) Opening Animation
+Purpose:
+- give the software a more intentional intro before the interface appears
+- make the system feel staged, polished, and slightly theatrical
+
+Planned behavior:
+- Show `AI Personality Builder` as a short animated intro title
+- Fade that title out
+- Animate the landing-page container opening into view
+- Keep the timing brief so the flow still feels smooth
+
 ### 1) Landing / Consent Screen
 Purpose:
 - explain what the software does
@@ -105,6 +116,9 @@ Current behavior:
 - The 4-letter result is used internally only
 
 ## Verified Next Steps
+- Add a short opening animation before the landing screen
+- Animate the `AI Personality Builder` title as an intro, then fade it out
+- Animate the landing container opening into view after that
 - Add a robot naming step before the scenario flow
 - Use that name in place of `AI robot` across the app
 - Add click sounds throughout the flow

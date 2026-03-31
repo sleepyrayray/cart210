@@ -15,6 +15,12 @@ Constraint for that work:
 - [ ] Add a heartbeat sound on the results screen so it feels like the robot is now "alive" with a personality.
 - [ ] Add a mute toggle that fits the current interface.
 
+## Opening Animation
+- [ ] Add a short intro animation before the main landing page begins.
+- [ ] Animate the `AI Personality Builder` title first, then fade it out.
+- [ ] Animate the landing-page container opening into view after the title fades.
+- [ ] Keep the sequence short and clean so it feels intentional, not slow.
+
 ## QA + Cleanup
 - [ ] Test the full flow in the browser on both desktop and mobile widths.
 - [ ] Check scenario-card wrapping and spacing after the naming feature is added.
@@ -37,6 +43,7 @@ Constraint for that work:
 The main required app work left is:
 1. robot naming
 2. sounds
-3. a final browser QA + cleanup pass
+3. opening animation
+4. a final browser QA + cleanup pass
 
 Everything else is optional polish or class-submission work.

@@ -264,13 +264,12 @@ function renderQuestion() {
 
     // progress
     const prog = createDiv("").addClass("progress").parent(body);
+    createDiv(`${currentIndex + 1} / ${questions.length}`).addClass("label").parent(prog);
     const bar = createDiv("").addClass("bar").parent(prog);
     const fill = createDiv("").addClass("fill").parent(bar);
 
     const pct = (currentIndex / questions.length) * 100;
     fill.style("width", `${pct}%`);
-
-    createDiv(`${currentIndex + 1} / ${questions.length}`).addClass("label").parent(prog);
 
     const questionWrap = createDiv("").addClass("question").parent(body);
     const robotMarker = " The AI robot...";
