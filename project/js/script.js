@@ -268,7 +268,7 @@ function renderQuestion() {
     const bar = createDiv("").addClass("bar").parent(prog);
     const fill = createDiv("").addClass("fill").parent(bar);
 
-    const pct = (currentIndex / questions.length) * 100;
+    const pct = ((currentIndex + 1) / questions.length) * 100;
     fill.style("width", `${pct}%`);
 
     const questionWrap = createDiv("").addClass("question").parent(body);
