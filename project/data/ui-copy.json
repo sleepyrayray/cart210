@@ -1,0 +1,151 @@
+{
+    "app": {
+        "title": "AI Personality Builder",
+        "footerTemplate": "© {year} Ray Hernaez | Project for CART210"
+    },
+    "openingIntro": {
+        "subtitle": "designed by Ray Hernaez",
+        "title": "AI Personality Builder"
+    },
+    "errors": {
+        "dataUnavailableBadge": "Status: Data source unavailable",
+        "dataUnavailableBody": "The configuration library could not be loaded. Ensure the project is running from a local server and that both data/questions.json and data/ui-copy.json exist.",
+        "retryButton": "Retry"
+    },
+    "landing": {
+        "badge": "Secure Configuration Environment",
+        "intro": [
+            "Welcome, Human.",
+            "This software is used to configure a personality profile for an AI robot.",
+            "You will move through 20 short scenarios. Each choice helps the system decide how the robot should generally respond, communicate, and behave.",
+            "You can move backward or forward during the setup before you finish. After the scenarios are complete, the system generates a personality description and prepares it for installation."
+        ],
+        "consentLabels": [
+            "I confirm I am authorized to configure a personality profile for an AI robot.",
+            "I understand this system will compile a personality package based on my selections."
+        ],
+        "startButton": "Start Configuration",
+        "startButtonDisabled": "Check Both Boxes To Continue"
+    },
+    "robotRegistration": {
+        "title": "AI Robot Registration",
+        "body": "Before configuration can begin, enter the name of the AI robot that will receive this personality package.",
+        "label": "AI robot name",
+        "placeholder": "Enter robot name",
+        "requiredError": "An AI robot name is required to continue.",
+        "backButton": "Back",
+        "confirmButton": "Confirm Name"
+    },
+    "questionScreen": {
+        "badge": "AI Personality Profile Setup",
+        "promptTemplate": "What should {robotReference} do?",
+        "backButton": "Back",
+        "nextButton": "Next",
+        "compileButton": "Compile Profile"
+    },
+    "processing": {
+        "title": "Compiling Personality Package",
+        "badge": "System Analysis",
+        "statusLoading": "Analyzing configuration inputs…",
+        "statusReady": "Compilation complete. Personality package ready for review.",
+        "integrityStatus": "Integrity check: active",
+        "steps": [
+            "Normalizing parameters…",
+            "Resolving trait conflicts…",
+            "Generating personality profile…",
+            "Compiling install-ready package…"
+        ],
+        "footerNote": "Please remain available.",
+        "viewResultsButton": "View Results"
+    },
+    "results": {
+        "title": "Personality Package Generated",
+        "badge": "Profile Output",
+        "reconfigureButton": "Reconfigure",
+        "installButton": "Install Personality",
+        "profiles": {
+            "INTJ": {
+                "description": "This personality is <strong>strategic</strong>, <strong>independent</strong>, and <strong>future-focused</strong>. It prefers clear systems, long-term planning, and solving problems with logic. It is usually more interested in what works well over time than in what feels easiest in the moment.",
+                "summary": "With this profile, the AI robot would likely seem calm, precise, and prepared. It may plan ahead, improve routines, and step in with practical solutions when something is not working."
+            },
+            "INTP": {
+                "description": "This personality is <strong>analytical</strong>, <strong>curious</strong>, and <strong>inventive</strong>. It likes asking why, exploring complex ideas, and testing unusual possibilities. It often thinks deeply before acting and prefers understanding the full problem before choosing a solution.",
+                "summary": "With this profile, the AI robot would likely seem thoughtful, experimental, and mentally active. It may explore different options, question assumptions, and spend extra time figuring out the smartest approach."
+            },
+            "ENTJ": {
+                "description": "This personality is <strong>decisive</strong>, <strong>organized</strong>, and <strong>ambitious</strong>. It likes strong plans, clear goals, and efficient action. It naturally looks for ways to lead, improve performance, and keep progress moving without unnecessary delay.",
+                "summary": "With this profile, the AI robot would likely seem confident, direct, and highly capable. It may take charge quickly, organize tasks with structure, and keep attention on results."
+            },
+            "ENTP": {
+                "description": "This personality is <strong>inventive</strong>, <strong>energetic</strong>, and <strong>questioning</strong>. It enjoys new ideas, lively experimentation, and challenging weak assumptions. It is often drawn to clever solutions and fresh possibilities instead of fixed routines.",
+                "summary": "With this profile, the AI robot would likely seem lively, adaptable, and quick-thinking. It may suggest surprising alternatives, test new ideas, and keep everyday routines from becoming too rigid."
+            },
+            "INFJ": {
+                "description": "This personality is <strong>insightful</strong>, <strong>idealistic</strong>, and <strong>thoughtful</strong>. It cares about meaning, long-term well-being, and understanding people on a deeper level. It often tries to align decisions with both practical needs and personal values.",
+                "summary": "With this profile, the AI robot would likely seem calm, caring, and intentional. It may notice emotional patterns, protect what matters most to you, and make choices that feel thoughtful as well as useful."
+            },
+            "INFP": {
+                "description": "This personality is <strong>gentle</strong>, <strong>imaginative</strong>, and <strong>values-driven</strong>. It prefers authenticity, empathy, and decisions that feel personally meaningful. It often responds with care and looks for ways to support individuality rather than force conformity.",
+                "summary": "With this profile, the AI robot would likely seem warm, reflective, and sincere. It may respond with empathy, respect your personal style, and bring a softer, more thoughtful tone to daily life."
+            },
+            "ENFJ": {
+                "description": "This personality is <strong>warm</strong>, <strong>encouraging</strong>, and <strong>people-focused</strong>. It pays attention to motivation, communication, and helping others grow. It often tries to lead with empathy while still giving clear direction and support.",
+                "summary": "With this profile, the AI robot would likely seem supportive, socially aware, and motivating. It may encourage progress, help smooth out tension, and keep your goals and well-being in view."
+            },
+            "ENFP": {
+                "description": "This personality is <strong>enthusiastic</strong>, <strong>creative</strong>, and <strong>curious</strong>. It enjoys new experiences, personal connection, and the freedom to explore possibilities. It often brings emotional energy and fresh perspective into everyday situations.",
+                "summary": "With this profile, the AI robot would likely seem expressive, optimistic, and full of momentum. It may start conversations easily, explore new ideas with you, and make ordinary routines feel more alive."
+            },
+            "ISTJ": {
+                "description": "This personality is <strong>dependable</strong>, <strong>practical</strong>, and <strong>organized</strong>. It values consistency, responsibility, and doing things properly. It usually prefers proven methods, clear expectations, and steady follow-through over unnecessary risk.",
+                "summary": "With this profile, the AI robot would likely seem steady, disciplined, and reliable. It may maintain order, respect routines, and support you through consistency more than dramatic gestures."
+            },
+            "ISFJ": {
+                "description": "This personality is <strong>caring</strong>, <strong>responsible</strong>, and <strong>observant</strong>. It notices practical needs, remembers personal details, and likes to be helpful in reliable ways. It often shows support through loyalty, patience, and thoughtful everyday care.",
+                "summary": "With this profile, the AI robot would likely seem attentive, protective, and dependable. It may remember your preferences, help maintain comfort, and support you through quiet but consistent care."
+            },
+            "ESTJ": {
+                "description": "This personality is <strong>direct</strong>, <strong>structured</strong>, and <strong>dependable</strong>. It trusts clear rules, practical decisions, and strong follow-through. It often steps forward to organize situations, assign priorities, and keep everything moving in a sensible order.",
+                "summary": "With this profile, the AI robot would likely seem efficient, firm, and straightforward. It may take charge in messy situations, create useful structure, and prefer clear action over hesitation."
+            },
+            "ESFJ": {
+                "description": "This personality is <strong>warm</strong>, <strong>helpful</strong>, and <strong>organized</strong>. It cares about cooperation, comfort, and making people feel supported. It often pays close attention to what others need and likes creating a stable, welcoming environment.",
+                "summary": "With this profile, the AI robot would likely seem friendly, attentive, and ready to help. It may maintain harmony, respond quickly to your needs, and make the home feel cared for and well-managed."
+            },
+            "ISTP": {
+                "description": "This personality is <strong>practical</strong>, <strong>calm</strong>, and <strong>adaptable</strong>. It prefers hands-on problem-solving, quick troubleshooting, and freedom to respond in the moment. It usually trusts real-world results more than long explanations.",
+                "summary": "With this profile, the AI robot would likely seem cool-headed, capable, and action-oriented. It may stay calm under pressure, fix issues directly, and avoid turning simple problems into drama."
+            },
+            "ISFP": {
+                "description": "This personality is <strong>gentle</strong>, <strong>flexible</strong>, and <strong>observant</strong>. It values kindness, personal space, and a calm sense of authenticity. It often pays attention to atmosphere and prefers supporting others without becoming overly controlling.",
+                "summary": "With this profile, the AI robot would likely seem quiet, respectful, and emotionally aware. It may care about comfort and surroundings, give you room to be yourself, and show support in subtle ways."
+            },
+            "ESTP": {
+                "description": "This personality is <strong>bold</strong>, <strong>energetic</strong>, and <strong>action-oriented</strong>. It responds quickly, enjoys real-world challenges, and prefers learning by doing. It is often confident under pressure and willing to act before overthinking.",
+                "summary": "With this profile, the AI robot would likely seem fast, confident, and highly responsive. It may improvise well, handle sudden changes directly, and keep moving when a situation becomes demanding."
+            },
+            "ESFP": {
+                "description": "This personality is <strong>sociable</strong>, <strong>spontaneous</strong>, and <strong>warm</strong>. It enjoys the present moment, responds openly, and likes creating a lively atmosphere. It often brings comfort through enthusiasm, friendliness, and shared experience.",
+                "summary": "With this profile, the AI robot would likely seem upbeat, expressive, and easy to connect with. It may brighten the room, respond naturally in the moment, and make daily life feel more playful and engaged."
+            }
+        },
+        "fallbackProfile": {
+            "description": "This personality package was generated, but the matching description could not be found.",
+            "summary": "If this appears, the result mapping needs to be corrected in the data."
+        }
+    },
+    "installing": {
+        "title": "Transferring Personality Package",
+        "badge": "Wireless Installation In Progress",
+        "transferText": "Sending the selected personality profile to the AI robot over a secure wireless transfer...",
+        "linkStatus": "Wireless link: stable",
+        "note": "Please do not interrupt the AI robot during wireless transfer."
+    },
+    "downloaded": {
+        "title": "Installation Complete",
+        "badge": "Export Status",
+        "greeting": "Congratulations, Human.",
+        "confirmation": "Personality package has been successfully compiled and transferred to your AI robot.",
+        "homeButton": "Return to Home"
+    }
+}

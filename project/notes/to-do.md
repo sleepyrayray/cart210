@@ -11,7 +11,6 @@ Constraint for that work:
 
 ## QA + Cleanup
 - [ ] Check scenario-card wrapping and spacing now that the robot name appears inside the question and options.
-- [ ] Remove outdated code comments or leftover dev notes that no longer match the current prototype.
 - [ ] Do one final consistency pass on button labels, headings, and status text.
 
 ## Optional Upgrades

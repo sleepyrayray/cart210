@@ -1,3 +1,6 @@
+/* AI Personality Builder interface styles.
+   Covers the shared shell, screen layouts, and motion/audio companion visuals. */
+
 :root {
     --bg: #070A12;
     --panel: rgba(255, 255, 255, 0.06);
@@ -37,6 +40,8 @@ body {
 canvas {
     display: block;
 }
+
+/* Shared shell */
 
 .ui {
     position: absolute;
@@ -171,6 +176,8 @@ canvas {
     text-transform: uppercase;
 }
 
+/* Shared panel structure */
+
 .panel-header {
     display: flex;
     align-items: center;
@@ -249,10 +256,6 @@ canvas {
     margin-right: auto;
 }
 
-.spacer {
-    height: 14px;
-}
-
 p {
     margin: 10px 0;
     color: var(--muted);
@@ -300,10 +303,6 @@ p {
     border-color: rgba(114, 247, 214, 0.50);
 }
 
-.btn.ghost {
-    background: transparent;
-}
-
 .checkbox {
     display: flex;
     gap: 10px;
@@ -320,6 +319,8 @@ p {
     font-size: 13px;
     line-height: 1.35;
 }
+
+/* Robot registration popup */
 
 .popup-overlay {
     position: absolute;
@@ -400,6 +401,8 @@ p {
     align-items: center;
     gap: 12px;
 }
+
+/* Shared progress and loader states */
 
 .progress {
     display: flex;
@@ -482,6 +485,8 @@ p {
     color: rgba(255, 255, 255, 0.92);
 }
 
+/* Scenario screen */
+
 .question {
     margin-top: 20px;
     font-size: 22px;
@@ -555,10 +560,6 @@ p {
     align-items: center;
 }
 
-.title-footer {
-    justify-content: flex-end;
-}
-
 .center-footer {
     justify-content: center;
 }
@@ -567,6 +568,8 @@ p {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.70);
 }
+
+/* Results and summary copy */
 
 .profile-copy {
     display: flex;
@@ -605,29 +608,4 @@ p {
     .options {
         grid-template-columns: 1fr;
     }
-}
-
-.kpi {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.kpi .card {
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 14px;
-    padding: 12px;
-}
-
-.kpi .card .t {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.70);
-}
-
-.kpi .card .v {
-    margin-top: 6px;
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.92);
 }

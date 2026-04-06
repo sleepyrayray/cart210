@@ -1,10 +1,10 @@
-// REPLACE your js/script.js with this updated version
-// (only two functional changes: remove the hint line + add a visible loader bar)
+/* AI Personality Builder application logic.
+   Loads content data, renders each screen, and manages audio, scoring, and transitions. */
 
-let app;
 let state = "loading"; // loading | title | question | processing | results | installing | downloaded
 
 let rawQuestions = [];
+let uiCopy = null;
 let questions = [];
 let currentIndex = 0;
 let robotName = "";
@@ -17,34 +17,43 @@ let consentCheckboxAuth;
 let consentCheckboxAcknowledge;
 
 let processingStartMs = 0;
-let processingDurationMs = 2600;
 let showViewResults = false;
 let installStartMs = 0;
-let installDurationMs = 9200;
+
 let clickSound = null;
 let clickSoundReady = false;
 let completionBeepSound = null;
 let completionBeepReady = false;
 let heartbeatSound = null;
 let heartbeatSoundReady = false;
+
 let heartbeatTimerId = null;
 let heartbeatPulseIntervalId = null;
 let heartbeatPulseTimeoutIds = [];
 let heartbeatGlowEl = null;
+
 let openingIntroPlayed = false;
 let openingIntroOverlayEl = null;
 let openingIntroTimeoutIds = [];
-const HEARTBEAT_PLAYBACK_RATE = 1.0;
-const HEARTBEAT_PULSE_OFFSETS = [0, 0.13, 0.56, 0.69];
 
-// loader DOM refs
+// Shared loader DOM refs are reused by both loading screens.
 let loaderFillEl = null;
 let loaderPctEl = null;
 let loaderTaskEls = [];
 let processingStatusEl = null;
 
+const PROCESSING_DURATION_MS = 2600;
+const INSTALL_DURATION_MS = 9200;
+const HEARTBEAT_PLAYBACK_RATE = 1.0;
+const HEARTBEAT_PULSE_OFFSETS = [0, 0.13, 0.56, 0.69];
+const OPENING_INTRO_ENTER_DELAY_MS = 60;
+const OPENING_INTRO_HOLD_MS = 1500;
+const OPENING_INTRO_FADE_MS = 1000;
+
 function preload() {
     loadJSON("data/questions.json", onQuestionsLoaded, onQuestionsError);
+    loadJSON("data/ui-copy.json", onUiCopyLoaded, onUiCopyError);
+
     clickSound = loadSound(
         "assets/sounds/click.m4a",
         () => {
@@ -58,6 +67,7 @@ function preload() {
             clickSound = null;
         }
     );
+
     completionBeepSound = loadSound(
         "assets/sounds/beep.m4a",
         () => {
@@ -71,6 +81,7 @@ function preload() {
             completionBeepSound = null;
         }
     );
+
     heartbeatSound = loadSound(
         "assets/sounds/heart-beat.m4a",
         () => {
@@ -87,7 +98,7 @@ function preload() {
 }
 
 function onQuestionsLoaded(data) {
-    rawQuestions = (data && data.questions) ? data.questions : [];
+    rawQuestions = data?.questions || [];
 }
 
 function onQuestionsError(err) {
@@ -95,18 +106,26 @@ function onQuestionsError(err) {
     rawQuestions = [];
 }
 
+function onUiCopyLoaded(data) {
+    uiCopy = data || null;
+}
+
+function onUiCopyError(err) {
+    console.error("Could not load ui-copy.json", err);
+    uiCopy = null;
+}
+
 function setup() {
-    const c = createCanvas(windowWidth, windowHeight);
-    c.parent("app");
-    app = select("#app");
+    const canvas = createCanvas(windowWidth, windowHeight);
+    canvas.parent("app");
 
     buildUIRoot();
 
-    if (rawQuestions.length > 0) {
+    if (hasLoadedCoreContent()) {
         initTitle(true);
     } else {
         setTimeout(() => {
-            if (rawQuestions.length > 0) initTitle(true);
+            if (hasLoadedCoreContent()) initTitle(true);
             else initErrorTitle();
         }, 400);
     }
@@ -115,60 +134,58 @@ function setup() {
 function draw() {
     background(7, 10, 18);
 
-    // subtle grid vibe
+    // The grid keeps the interface feeling like a live system even though the UI is DOM-based.
     noFill();
     stroke(255, 255, 255, 18);
     strokeWeight(1);
     for (let x = 40; x < width; x += 120) line(x, 0, x, height);
     for (let y = 40; y < height; y += 120) line(0, y, width, y);
 
-    // processing loader animation
     if (state === "processing") {
-        const elapsed = millis() - processingStartMs;
-        const t = constrain(elapsed / processingDurationMs, 0, 1);
-        const pct = Math.round(t * 100);
-
-        if (loaderFillEl) loaderFillEl.style("width", `${pct}%`);
-        if (loaderPctEl) loaderPctEl.html(`${pct}%`);
-        updateTaskListState(t);
-
-        if (elapsed > processingDurationMs) {
+        updateLoaderProgress(millis() - processingStartMs, PROCESSING_DURATION_MS, uiCopy.processing.statusReady, () => {
             showViewResults = true;
             const btn = select("#viewResultsBtn");
             if (btn) btn.removeAttribute("disabled");
-            // lock at 100%
-            if (loaderFillEl) loaderFillEl.style("width", `100%`);
-            if (loaderPctEl) loaderPctEl.html(`100%`);
-            if (processingStatusEl) {
-                processingStatusEl.html("Compilation complete. Personality package ready for review.");
-            }
-            updateTaskListState(1, true);
-        }
+        });
     }
 
     if (state === "installing") {
-        const elapsed = millis() - installStartMs;
-        const t = constrain(elapsed / installDurationMs, 0, 1);
-        const pct = Math.round(t * 100);
-
-        if (loaderFillEl) loaderFillEl.style("width", `${pct}%`);
-        if (loaderPctEl) loaderPctEl.html(`${pct}%`);
-        updateTaskListState(t);
-
-        if (elapsed > installDurationMs) {
-            if (loaderFillEl) loaderFillEl.style("width", "100%");
-            if (loaderPctEl) loaderPctEl.html("100%");
-            updateTaskListState(1, true);
+        updateLoaderProgress(millis() - installStartMs, INSTALL_DURATION_MS, null, () => {
             renderDownloaded();
-        }
+        });
     }
+}
+
+function updateLoaderProgress(elapsed, durationMs, completeStatusText, onComplete) {
+    const t = constrain(elapsed / durationMs, 0, 1);
+    const pct = Math.round(t * 100);
+
+    if (loaderFillEl) loaderFillEl.style("width", `${pct}%`);
+    if (loaderPctEl) loaderPctEl.html(`${pct}%`);
+    updateTaskListState(t);
+
+    if (elapsed <= durationMs) return;
+
+    if (loaderFillEl) loaderFillEl.style("width", "100%");
+    if (loaderPctEl) loaderPctEl.html("100%");
+    updateTaskListState(1, true);
+
+    if (completeStatusText && processingStatusEl) {
+        processingStatusEl.html(completeStatusText);
+    }
+
+    onComplete();
 }
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
 
-/* ---------------- UI BUILD ---------------- */
+/* ---------------- APP SHELL ---------------- */
+
+function hasLoadedCoreContent() {
+    return rawQuestions.length > 0 && uiCopy;
+}
 
 function buildUIRoot() {
     const ui = createDiv("");
@@ -183,6 +200,7 @@ function buildUIRoot() {
 }
 
 function clearUI() {
+    // Screen changes should never leave audio loops, timeouts, or stale loader refs behind.
     stopHeartbeatLoop();
     clearOpeningIntro();
 
@@ -190,7 +208,6 @@ function clearUI() {
     if (ui) ui.html("");
     heartbeatGlowEl = null;
 
-    // reset loader refs
     loaderFillEl = null;
     loaderPctEl = null;
     loaderTaskEls = [];
@@ -198,27 +215,46 @@ function clearUI() {
 }
 
 function formatAppFooterText() {
-    const yearText = new Intl.DateTimeFormat("en-US", {
-        year: "numeric"
-    }).format(new Date());
-
-    return `© ${yearText} Ray Hernaez | Project for CART210`;
+    const yearText = new Intl.DateTimeFormat("en-US", { year: "numeric" }).format(new Date());
+    const template = uiCopy?.app?.footerTemplate || "© {year} Ray Hernaez | Project for CART210";
+    return template.replace("{year}", yearText);
 }
+
+function buildPanel(title, sub, badgeText) {
+    const ui = select("#uiRoot");
+    const panel = createDiv("").addClass("panel").parent(ui);
+
+    const header = createDiv("").addClass("panel-header").parent(panel);
+    const brand = createDiv("").addClass("brand").parent(header);
+    createElement("h1", title).parent(brand);
+
+    if (sub) {
+        createDiv(sub).addClass("sub").parent(brand);
+    }
+
+    createDiv(badgeText).addClass("badge").parent(header);
+
+    const body = createDiv("").addClass("panel-body").parent(panel);
+    return { panel, body };
+}
+
+/* ---------------- LANDING + INTRO ---------------- */
 
 function initErrorTitle() {
     state = "title";
     robotName = "";
     clearUI();
 
-    const panel = buildPanel("AI Personality Builder", "Welcome, Human.", "Status: Data source unavailable");
-    const body = panel.body;
+    const title = uiCopy?.app?.title || "AI Personality Builder";
+    const badge = uiCopy?.errors?.dataUnavailableBadge || "Status: Data source unavailable";
+    const bodyText = uiCopy?.errors?.dataUnavailableBody || "The required data could not be loaded.";
+    const retryLabel = uiCopy?.errors?.retryButton || "Retry";
 
-    createP("The configuration library could not be loaded. Ensure the project is running from a local server and that data/questions.json exists.")
-        .parent(body)
-        .style("margin-top", "10px");
+    const panel = buildPanel(title, "Welcome, Human.", badge);
+    createP(bodyText).parent(panel.body).style("margin-top", "10px");
 
-    const row = createDiv("").addClass("row").parent(body);
-    const btn = createButton("Retry").addClass("btn primary").parent(row);
+    const row = createDiv("").addClass("row").parent(panel.body);
+    const btn = createButton(retryLabel).addClass("btn primary").parent(row);
     bindButtonPress(btn, () => location.reload());
 }
 
@@ -226,49 +262,36 @@ function initTitle(withOpeningIntro = false) {
     state = "title";
     robotName = "";
     clearUI();
+    consentCheckboxAuth = null;
+    consentCheckboxAcknowledge = null;
 
-    const panel = buildPanel("AI Personality Builder", "", "Secure Configuration Environment");
+    const landingCopy = uiCopy.landing;
+    const panel = buildPanel(uiCopy.app.title, "", landingCopy.badge);
     const body = panel.body;
 
     const intro = createDiv("").addClass("title-copy").parent(body);
-    createP("Welcome, Human.").addClass("title-intro").parent(intro);
-    createP("This software is used to configure a personality profile for an AI robot.")
-        .addClass("title-intro")
-        .parent(intro);
-    createP("You will move through 20 short scenarios. Each choice helps the system decide how the robot should generally respond, communicate, and behave.")
-        .addClass("title-intro")
-        .parent(intro);
-    createP("You can move backward or forward during the setup before you finish. After the scenarios are complete, the system generates a personality description and prepares it for installation.")
-        .addClass("title-intro")
-        .parent(intro);
+    landingCopy.intro.forEach((paragraph) => {
+        createP(paragraph).addClass("title-intro").parent(intro);
+    });
 
     const consentStack = createDiv("").addClass("consent-stack").parent(body);
+    landingCopy.consentLabels.forEach((labelText) => {
+        const wrap = createDiv("").addClass("checkbox").parent(consentStack);
+        const checkbox = createCheckbox("", false);
+        checkbox.parent(wrap);
+        checkbox.elt.style.marginTop = "2px";
+        createElement("label", labelText).parent(wrap);
 
-    const authWrap = createDiv("").addClass("checkbox").parent(consentStack);
-    consentCheckboxAuth = createCheckbox("", false);
-    consentCheckboxAuth.parent(authWrap);
-    consentCheckboxAuth.elt.style.marginTop = "2px";
-    createElement(
-        "label",
-        "I confirm I am authorized to configure a personality profile for an AI robot."
-    ).parent(authWrap);
-
-    const acknowledgeWrap = createDiv("").addClass("checkbox").parent(consentStack);
-    consentCheckboxAcknowledge = createCheckbox("", false);
-    consentCheckboxAcknowledge.parent(acknowledgeWrap);
-    consentCheckboxAcknowledge.elt.style.marginTop = "2px";
-    createElement(
-        "label",
-        "I understand this system will compile a personality package based on my selections."
-    ).parent(acknowledgeWrap);
+        if (!consentCheckboxAuth) consentCheckboxAuth = checkbox;
+        else consentCheckboxAcknowledge = checkbox;
+    });
 
     const footer = createDiv("").addClass("footer center-footer").parent(body);
-
-    titleStartBtn = createButton("Start Configuration").addClass("btn primary").parent(footer);
+    titleStartBtn = createButton(landingCopy.startButton).addClass("btn primary").parent(footer);
 
     function updateTitleStartState() {
         const canStart = consentCheckboxAuth.checked() && consentCheckboxAcknowledge.checked();
-        titleStartBtn.html(canStart ? "Start Configuration" : "Check Both Boxes To Continue");
+        titleStartBtn.html(canStart ? landingCopy.startButton : landingCopy.startButtonDisabled);
 
         if (canStart) titleStartBtn.removeAttribute("disabled");
         else titleStartBtn.attribute("disabled", "true");
@@ -288,61 +311,29 @@ function initTitle(withOpeningIntro = false) {
     }
 }
 
-function kpiCard(parent, title, value) {
-    const card = createDiv("").addClass("card").parent(parent);
-    createDiv(title).addClass("t").parent(card);
-    createDiv(value).addClass("v").parent(card);
-}
-
-function buildPanel(title, sub, badgeText) {
-    const ui = select("#uiRoot");
-
-    const panel = createDiv("").addClass("panel").parent(ui);
-
-    const header = createDiv("").addClass("panel-header").parent(panel);
-
-    const brand = createDiv("").addClass("brand").parent(header);
-    createElement("h1", title).parent(brand);
-    if (sub) {
-        createDiv(sub).addClass("sub").parent(brand);
-    }
-
-    createDiv(badgeText).addClass("badge").parent(header);
-
-    const body = createDiv("").addClass("panel-body").parent(panel);
-
-    return { panel, body };
-}
-
 function showOpeningIntro() {
     if (openingIntroPlayed) return;
     openingIntroPlayed = true;
 
-    const ui = select("#uiRoot");
-    const overlay = createDiv("").addClass("opening-intro").parent(ui);
+    const overlay = createDiv("").addClass("opening-intro").parent(select("#uiRoot"));
     const copy = createDiv("").addClass("opening-intro-copy").parent(overlay);
-    createDiv("designed by Ray Hernaez").addClass("opening-intro-sub").parent(copy);
-    createDiv("AI Personality Builder").addClass("opening-intro-title").parent(copy);
+    createDiv(uiCopy.openingIntro.subtitle).addClass("opening-intro-sub").parent(copy);
+    createDiv(uiCopy.openingIntro.title).addClass("opening-intro-title").parent(copy);
     openingIntroOverlayEl = overlay;
 
     queueOpeningIntroTimeout(() => {
-        if (openingIntroOverlayEl) {
-            openingIntroOverlayEl.addClass("opening-intro-visible");
-        }
-    }, 60);
+        if (openingIntroOverlayEl) openingIntroOverlayEl.addClass("opening-intro-visible");
+    }, OPENING_INTRO_ENTER_DELAY_MS);
 
     queueOpeningIntroTimeout(() => {
-        if (openingIntroOverlayEl) {
-            openingIntroOverlayEl.addClass("opening-intro-exit");
-        }
-    }, 2500);
+        if (openingIntroOverlayEl) openingIntroOverlayEl.addClass("opening-intro-exit");
+    }, OPENING_INTRO_ENTER_DELAY_MS + OPENING_INTRO_HOLD_MS);
 
     queueOpeningIntroTimeout(() => {
-        if (openingIntroOverlayEl) {
-            openingIntroOverlayEl.remove();
-            openingIntroOverlayEl = null;
-        }
-    }, 3500);
+        if (!openingIntroOverlayEl) return;
+        openingIntroOverlayEl.remove();
+        openingIntroOverlayEl = null;
+    }, OPENING_INTRO_ENTER_DELAY_MS + OPENING_INTRO_HOLD_MS + OPENING_INTRO_FADE_MS);
 }
 
 function queueOpeningIntroTimeout(handler, delayMs) {
@@ -360,29 +351,27 @@ function clearOpeningIntro() {
         openingIntroTimeoutIds = [];
     }
 
-    if (openingIntroOverlayEl) {
-        openingIntroOverlayEl.remove();
-        openingIntroOverlayEl = null;
-    }
+    if (!openingIntroOverlayEl) return;
+
+    openingIntroOverlayEl.remove();
+    openingIntroOverlayEl = null;
 }
 
 function showRobotNamePrompt(onConfirm) {
-    const ui = select("#uiRoot");
-    const overlay = createDiv("").addClass("popup-overlay").parent(ui);
+    const popupCopy = uiCopy.robotRegistration;
+    const overlay = createDiv("").addClass("popup-overlay").parent(select("#uiRoot"));
     const card = createDiv("").addClass("popup-card").parent(overlay);
     const inputId = `robotNameInput-${Date.now()}`;
 
-    createDiv("AI Robot Registration").addClass("popup-title").parent(card);
-    createP("Before configuration can begin, enter the name of the AI robot that will receive this personality package.")
-        .addClass("popup-body")
-        .parent(card);
+    createDiv(popupCopy.title).addClass("popup-title").parent(card);
+    createP(popupCopy.body).addClass("popup-body").parent(card);
 
     const field = createDiv("").addClass("popup-field").parent(card);
-    const label = createElement("label", "AI robot name").addClass("popup-label").parent(field);
+    const label = createElement("label", popupCopy.label).addClass("popup-label").parent(field);
     const input = createInput("").addClass("popup-input").parent(field);
     input.id(inputId);
     input.attribute("name", `robot-name-${Date.now()}`);
-    input.attribute("placeholder", "Enter robot name");
+    input.attribute("placeholder", popupCopy.placeholder);
     input.attribute("autocomplete", "off");
     input.attribute("autocorrect", "off");
     input.attribute("autocapitalize", "off");
@@ -392,16 +381,15 @@ function showRobotNamePrompt(onConfirm) {
     label.attribute("for", inputId);
 
     const error = createDiv("").addClass("popup-error").parent(card);
-
     const actions = createDiv("").addClass("popup-actions").parent(card);
-    const backBtn = createButton("Back").addClass("btn").parent(actions);
-    const confirmBtn = createButton("Confirm Name").addClass("btn primary").parent(actions);
+    const backBtn = createButton(popupCopy.backButton).addClass("btn").parent(actions);
+    const confirmBtn = createButton(popupCopy.confirmButton).addClass("btn primary").parent(actions);
 
     function submitRobotName() {
         const nextName = normalizeRobotName(input.value());
 
         if (!nextName) {
-            error.elt.textContent = "An AI robot name is required to continue.";
+            error.elt.textContent = popupCopy.requiredError;
             input.elt.focus();
             return;
         }
@@ -412,16 +400,13 @@ function showRobotNamePrompt(onConfirm) {
     }
 
     input.input(() => {
-        if (normalizeRobotName(input.value())) {
-            error.elt.textContent = "";
-        }
+        if (normalizeRobotName(input.value())) error.elt.textContent = "";
     });
 
     input.elt.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            submitRobotName();
-        }
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+        submitRobotName();
     });
 
     bindButtonPress(backBtn, () => {
@@ -433,45 +418,50 @@ function showRobotNamePrompt(onConfirm) {
     setTimeout(() => input.elt.focus(), 0);
 }
 
-/* ---------------- SESSION + FLOW ---------------- */
+/* ---------------- SESSION FLOW ---------------- */
 
 function startSession() {
+    // Each run starts from a fresh clone so shuffling never mutates the source question bank.
     selections = new Array(rawQuestions.length).fill(null);
     scores = { E: 0, I: 0, N: 0, S: 0, T: 0, F: 0, J: 0, P: 0 };
     currentIndex = 0;
     showViewResults = false;
 
-    questions = shuffleArray(structuredClone(rawQuestions));
-
-    for (const q of questions) {
-        if (Math.random() < 0.5) q.options.reverse();
-    }
+    questions = shuffleArray(cloneQuestions(rawQuestions));
+    questions.forEach((question) => {
+        if (Math.random() < 0.5) question.options.reverse();
+    });
 
     state = "question";
     renderQuestion();
 }
 
+function cloneQuestions(sourceQuestions) {
+    return sourceQuestions.map((question) => ({
+        ...question,
+        options: question.options.map((option) => ({ ...option }))
+    }));
+}
+
 function renderQuestion() {
     clearUI();
 
+    const questionCopy = uiCopy.questionScreen;
     const q = questions[currentIndex];
-
-    const panel = buildPanel("AI Personality Builder", "", "AI Personality Profile Setup");
+    const panel = buildPanel(uiCopy.app.title, "", questionCopy.badge);
     const body = panel.body;
 
-    // progress
     const prog = createDiv("").addClass("progress").parent(body);
     createDiv(`${currentIndex + 1} / ${questions.length}`).addClass("label").parent(prog);
     const bar = createDiv("").addClass("bar").parent(prog);
     const fill = createDiv("").addClass("fill").parent(bar);
-
-    const pct = ((currentIndex + 1) / questions.length) * 100;
-    fill.style("width", `${pct}%`);
+    fill.style("width", `${((currentIndex + 1) / questions.length) * 100}%`);
 
     const questionWrap = createDiv("").addClass("question").parent(body);
     const robotMarker = " The AI robot...";
     const markerIndex = q.prompt.lastIndexOf(robotMarker);
 
+    // Keeping the robot prompt on its own line makes the scenario easier to scan on both desktop and mobile.
     if (markerIndex !== -1) {
         createDiv(q.prompt.slice(0, markerIndex).trim()).addClass("question-main").parent(questionWrap);
         const robotLine = createDiv("").addClass("question-robot").parent(questionWrap);
@@ -482,68 +472,67 @@ function renderQuestion() {
     }
 
     const opts = createDiv("").addClass("options").parent(body);
-
     const selected = selections[currentIndex];
-    const optCards = [];
+    const optionCards = [];
 
-    q.options.forEach((opt, idx) => {
+    q.options.forEach((option, index) => {
         const card = createDiv("").addClass("option-card").parent(opts);
-        card.mousePressed(() => selectOption(idx, optCards));
+        card.mousePressed(() => selectOption(index));
+
         const optionText = createDiv("").addClass("txt").parent(card);
-        optionText.html(robotOptionMarkup(opt.text));
+        optionText.html(robotOptionMarkup(option.text));
 
-        optCards.push(card);
+        optionCards.push(card);
 
-        if (selected && selected.chosenIndex === idx) {
+        if (selected?.chosenIndex === index) {
             card.addClass("selected");
         }
     });
 
     const footer = createDiv("").addClass("footer").parent(body);
-
     let backBtn = null;
+
     if (currentIndex > 0) {
-        backBtn = createButton("Back").addClass("btn").parent(footer);
+        backBtn = createButton(questionCopy.backButton).addClass("btn").parent(footer);
     } else {
         createDiv("").parent(footer);
     }
 
     const right = createDiv("").addClass("row").parent(footer);
-
-    const nextBtn = createButton(currentIndex === questions.length - 1 ? "Compile Profile" : "Next")
-        .addClass("btn primary")
-        .parent(right);
+    const nextLabel = currentIndex === questions.length - 1 ? questionCopy.compileButton : questionCopy.nextButton;
+    const nextBtn = createButton(nextLabel).addClass("btn primary").parent(right);
 
     if (!selections[currentIndex]) nextBtn.attribute("disabled", "true");
 
     if (backBtn) {
         bindButtonPress(backBtn, () => {
-            currentIndex--;
+            currentIndex -= 1;
             renderQuestion();
         });
     }
 
     bindButtonPress(nextBtn, () => {
         if (!selections[currentIndex]) return;
+
         if (currentIndex < questions.length - 1) {
-            currentIndex++;
+            currentIndex += 1;
             renderQuestion();
         } else {
             renderProcessing();
         }
     });
 
-    function selectOption(idx, cards) {
-        cards.forEach(c => c.removeClass("selected"));
-        cards[idx].addClass("selected");
+    function selectOption(index) {
+        optionCards.forEach((card) => card.removeClass("selected"));
+        optionCards[index].addClass("selected");
 
-        const opt = q.options[idx];
+        const option = q.options[index];
         selections[currentIndex] = {
             qid: q.id,
             axis: q.axis,
-            chosenIndex: idx,
-            chosenLetter: opt.letter,
-            chosenText: opt.text
+            chosenIndex: index,
+            chosenLetter: option.letter,
+            chosenText: option.text
         };
 
         recomputeScores();
@@ -555,34 +544,27 @@ function renderProcessing() {
     state = "processing";
     clearUI();
 
-    const panel = buildPanel("Compiling Personality Package", "", "System Analysis");
+    const processingCopy = uiCopy.processing;
+    const panel = buildPanel(processingCopy.title, "", processingCopy.badge);
     const body = panel.body;
 
-    processingStatusEl = createP("Analyzing configuration inputs…").parent(body);
+    processingStatusEl = createP(processingCopy.statusLoading).parent(body);
 
-    // Visible loader bar
     const loader = createDiv("").addClass("loader").parent(body);
     loaderFillEl = createDiv("").addClass("loader-fill").parent(loader);
 
     const meta = createDiv("").addClass("processing-meta").parent(body);
-    createDiv("Integrity check: active").parent(meta);
+    createDiv(processingCopy.integrityStatus).parent(meta);
     loaderPctEl = createDiv("0%").parent(meta);
 
-    const steps = [
-        "Normalizing parameters…",
-        "Resolving trait conflicts…",
-        "Generating personality profile…",
-        "Compiling install-ready package…"
-    ];
-
-    buildTaskList(body, steps);
+    buildTaskList(body, processingCopy.steps);
 
     createDiv("").addClass("hr").parent(body);
 
     const footer = createDiv("").addClass("footer").parent(body);
-    createDiv("Please remain available.").addClass("small").parent(footer);
+    createDiv(processingCopy.footerNote).addClass("small").parent(footer);
 
-    const btn = createButton("View Results").addClass("btn primary").parent(footer);
+    const btn = createButton(processingCopy.viewResultsButton).addClass("btn primary").parent(footer);
     btn.id("viewResultsBtn");
     btn.attribute("disabled", "true");
 
@@ -599,21 +581,20 @@ function renderResults() {
     state = "results";
     clearUI();
 
+    const resultsCopy = uiCopy.results;
     const profile = personalityProfileFor(computeType());
-    const panel = buildPanel("Personality Package Generated", "", "Profile Output");
+    const panel = buildPanel(resultsCopy.title, "", resultsCopy.badge);
     const body = panel.body;
 
     const copy = createDiv("").addClass("profile-copy").parent(body);
     createP(profile.description).addClass("profile-paragraph").parent(copy);
-    const summary = createP("").addClass("profile-paragraph profile-summary").parent(copy);
-    summary.html(replaceRobotNameMarkup(profile.summary));
+    createP(replaceRobotNameMarkup(profile.summary)).addClass("profile-paragraph profile-summary").parent(copy);
 
     createDiv("").addClass("hr").parent(body);
 
     const footer = createDiv("").addClass("footer").parent(body);
-
-    const reconfigureBtn = createButton("Reconfigure").addClass("btn").parent(footer);
-    const installBtn = createButton("Install Personality").addClass("btn primary").parent(footer);
+    const reconfigureBtn = createButton(resultsCopy.reconfigureButton).addClass("btn").parent(footer);
+    const installBtn = createButton(resultsCopy.installButton).addClass("btn primary").parent(footer);
 
     bindButtonPress(reconfigureBtn, () => startSession());
     bindButtonPress(installBtn, () => renderInstalling());
@@ -623,24 +604,25 @@ function renderInstalling() {
     state = "installing";
     clearUI();
 
-    const panel = buildPanel("Transferring Personality Package", "", "Wireless Installation In Progress");
+    const installCopy = uiCopy.installing;
+    const panel = buildPanel(installCopy.title, "", installCopy.badge);
     const body = panel.body;
 
     const transferText = createP("").parent(body);
-    transferText.html(replaceRobotNameMarkup("Sending the selected personality profile to the AI robot over a secure wireless transfer..."));
+    transferText.html(replaceRobotNameMarkup(installCopy.transferText));
 
     const loader = createDiv("").addClass("loader").parent(body);
     loaderFillEl = createDiv("").addClass("loader-fill").parent(loader);
 
     const meta = createDiv("").addClass("processing-meta").parent(body);
-    createDiv("Wireless link: stable").parent(meta);
+    createDiv(installCopy.linkStatus).parent(meta);
     loaderPctEl = createDiv("0%").parent(meta);
 
     createDiv("").addClass("hr").parent(body);
 
     const footer = createDiv("").addClass("footer").parent(body);
     const transferNote = createDiv("").addClass("small").parent(footer);
-    transferNote.html(replaceRobotNameMarkup("Please do not interrupt the AI robot during wireless transfer."));
+    transferNote.html(replaceRobotNameMarkup(installCopy.note));
 
     installStartMs = millis();
 }
@@ -650,21 +632,20 @@ function renderDownloaded() {
     clearUI();
     playCompletionBeep();
 
-    const ui = select("#uiRoot");
-    heartbeatGlowEl = createDiv("").addClass("heartbeat-glow").parent(ui);
+    const downloadedCopy = uiCopy.downloaded;
+    heartbeatGlowEl = createDiv("").addClass("heartbeat-glow").parent(select("#uiRoot"));
 
-    const panel = buildPanel("Installation Complete", "", "Export Status");
+    const panel = buildPanel(downloadedCopy.title, "", downloadedCopy.badge);
     const body = panel.body;
 
     const copy = createDiv("").addClass("title-copy").parent(body);
-    createP("Congratulations, Human.").addClass("title-intro").parent(copy);
-    const completionText = createP("").addClass("title-intro").parent(copy);
-    completionText.html(replaceRobotNameMarkup("Personality package has been successfully compiled and transferred to your AI robot."));
+    createP(downloadedCopy.greeting).addClass("title-intro").parent(copy);
+    createP(replaceRobotNameMarkup(downloadedCopy.confirmation)).addClass("title-intro").parent(copy);
 
     createDiv("").addClass("hr").parent(body);
 
     const footer = createDiv("").addClass("footer center-footer").parent(body);
-    const homeBtn = createButton("Return to Home").addClass("btn").parent(footer);
+    const homeBtn = createButton(downloadedCopy.homeButton).addClass("btn").parent(footer);
 
     bindButtonPress(homeBtn, () => initTitle());
     scheduleHeartbeatLoop();
@@ -674,95 +655,30 @@ function renderDownloaded() {
 
 function recomputeScores() {
     scores = { E: 0, I: 0, N: 0, S: 0, T: 0, F: 0, J: 0, P: 0 };
-    for (const sel of selections) {
-        if (!sel) continue;
-        scores[sel.chosenLetter] += 1;
+
+    for (const selection of selections) {
+        if (!selection) continue;
+        scores[selection.chosenLetter] += 1;
     }
 }
 
 function computeType() {
-    const l1 = (scores.E >= scores.I) ? "E" : "I";
-    const l2 = (scores.N >= scores.S) ? "N" : "S";
-    const l3 = (scores.T >= scores.F) ? "T" : "F";
-    const l4 = (scores.J >= scores.P) ? "J" : "P";
-    return `${l1}${l2}${l3}${l4}`;
+    const first = scores.E >= scores.I ? "E" : "I";
+    const second = scores.N >= scores.S ? "N" : "S";
+    const third = scores.T >= scores.F ? "T" : "F";
+    const fourth = scores.J >= scores.P ? "J" : "P";
+    return `${first}${second}${third}${fourth}`;
 }
 
 function personalityProfileFor(type) {
-    const map = {
-        INTJ: {
-            description: "This personality is <strong>strategic</strong>, <strong>independent</strong>, and <strong>future-focused</strong>. It prefers clear systems, long-term planning, and solving problems with logic. It is usually more interested in what works well over time than in what feels easiest in the moment.",
-            summary: "With this profile, the AI robot would likely seem calm, precise, and prepared. It may plan ahead, improve routines, and step in with practical solutions when something is not working."
-        },
-        INTP: {
-            description: "This personality is <strong>analytical</strong>, <strong>curious</strong>, and <strong>inventive</strong>. It likes asking why, exploring complex ideas, and testing unusual possibilities. It often thinks deeply before acting and prefers understanding the full problem before choosing a solution.",
-            summary: "With this profile, the AI robot would likely seem thoughtful, experimental, and mentally active. It may explore different options, question assumptions, and spend extra time figuring out the smartest approach."
-        },
-        ENTJ: {
-            description: "This personality is <strong>decisive</strong>, <strong>organized</strong>, and <strong>ambitious</strong>. It likes strong plans, clear goals, and efficient action. It naturally looks for ways to lead, improve performance, and keep progress moving without unnecessary delay.",
-            summary: "With this profile, the AI robot would likely seem confident, direct, and highly capable. It may take charge quickly, organize tasks with structure, and keep attention on results."
-        },
-        ENTP: {
-            description: "This personality is <strong>inventive</strong>, <strong>energetic</strong>, and <strong>questioning</strong>. It enjoys new ideas, lively experimentation, and challenging weak assumptions. It is often drawn to clever solutions and fresh possibilities instead of fixed routines.",
-            summary: "With this profile, the AI robot would likely seem lively, adaptable, and quick-thinking. It may suggest surprising alternatives, test new ideas, and keep everyday routines from becoming too rigid."
-        },
-        INFJ: {
-            description: "This personality is <strong>insightful</strong>, <strong>idealistic</strong>, and <strong>thoughtful</strong>. It cares about meaning, long-term well-being, and understanding people on a deeper level. It often tries to align decisions with both practical needs and personal values.",
-            summary: "With this profile, the AI robot would likely seem calm, caring, and intentional. It may notice emotional patterns, protect what matters most to you, and make choices that feel thoughtful as well as useful."
-        },
-        INFP: {
-            description: "This personality is <strong>gentle</strong>, <strong>imaginative</strong>, and <strong>values-driven</strong>. It prefers authenticity, empathy, and decisions that feel personally meaningful. It often responds with care and looks for ways to support individuality rather than force conformity.",
-            summary: "With this profile, the AI robot would likely seem warm, reflective, and sincere. It may respond with empathy, respect your personal style, and bring a softer, more thoughtful tone to daily life."
-        },
-        ENFJ: {
-            description: "This personality is <strong>warm</strong>, <strong>encouraging</strong>, and <strong>people-focused</strong>. It pays attention to motivation, communication, and helping others grow. It often tries to lead with empathy while still giving clear direction and support.",
-            summary: "With this profile, the AI robot would likely seem supportive, socially aware, and motivating. It may encourage progress, help smooth out tension, and keep your goals and well-being in view."
-        },
-        ENFP: {
-            description: "This personality is <strong>enthusiastic</strong>, <strong>creative</strong>, and <strong>curious</strong>. It enjoys new experiences, personal connection, and the freedom to explore possibilities. It often brings emotional energy and fresh perspective into everyday situations.",
-            summary: "With this profile, the AI robot would likely seem expressive, optimistic, and full of momentum. It may start conversations easily, explore new ideas with you, and make ordinary routines feel more alive."
-        },
-        ISTJ: {
-            description: "This personality is <strong>dependable</strong>, <strong>practical</strong>, and <strong>organized</strong>. It values consistency, responsibility, and doing things properly. It usually prefers proven methods, clear expectations, and steady follow-through over unnecessary risk.",
-            summary: "With this profile, the AI robot would likely seem steady, disciplined, and reliable. It may maintain order, respect routines, and support you through consistency more than dramatic gestures."
-        },
-        ISFJ: {
-            description: "This personality is <strong>caring</strong>, <strong>responsible</strong>, and <strong>observant</strong>. It notices practical needs, remembers personal details, and likes to be helpful in reliable ways. It often shows support through loyalty, patience, and thoughtful everyday care.",
-            summary: "With this profile, the AI robot would likely seem attentive, protective, and dependable. It may remember your preferences, help maintain comfort, and support you through quiet but consistent care."
-        },
-        ESTJ: {
-            description: "This personality is <strong>direct</strong>, <strong>structured</strong>, and <strong>dependable</strong>. It trusts clear rules, practical decisions, and strong follow-through. It often steps forward to organize situations, assign priorities, and keep everything moving in a sensible order.",
-            summary: "With this profile, the AI robot would likely seem efficient, firm, and straightforward. It may take charge in messy situations, create useful structure, and prefer clear action over hesitation."
-        },
-        ESFJ: {
-            description: "This personality is <strong>warm</strong>, <strong>helpful</strong>, and <strong>organized</strong>. It cares about cooperation, comfort, and making people feel supported. It often pays close attention to what others need and likes creating a stable, welcoming environment.",
-            summary: "With this profile, the AI robot would likely seem friendly, attentive, and ready to help. It may maintain harmony, respond quickly to your needs, and make the home feel cared for and well-managed."
-        },
-        ISTP: {
-            description: "This personality is <strong>practical</strong>, <strong>calm</strong>, and <strong>adaptable</strong>. It prefers hands-on problem-solving, quick troubleshooting, and freedom to respond in the moment. It usually trusts real-world results more than long explanations.",
-            summary: "With this profile, the AI robot would likely seem cool-headed, capable, and action-oriented. It may stay calm under pressure, fix issues directly, and avoid turning simple problems into drama."
-        },
-        ISFP: {
-            description: "This personality is <strong>gentle</strong>, <strong>flexible</strong>, and <strong>observant</strong>. It values kindness, personal space, and a calm sense of authenticity. It often pays attention to atmosphere and prefers supporting others without becoming overly controlling.",
-            summary: "With this profile, the AI robot would likely seem quiet, respectful, and emotionally aware. It may care about comfort and surroundings, give you room to be yourself, and show support in subtle ways."
-        },
-        ESTP: {
-            description: "This personality is <strong>bold</strong>, <strong>energetic</strong>, and <strong>action-oriented</strong>. It responds quickly, enjoys real-world challenges, and prefers learning by doing. It is often confident under pressure and willing to act before overthinking.",
-            summary: "With this profile, the AI robot would likely seem fast, confident, and highly responsive. It may improvise well, handle sudden changes directly, and keep moving when a situation becomes demanding."
-        },
-        ESFP: {
-            description: "This personality is <strong>sociable</strong>, <strong>spontaneous</strong>, and <strong>warm</strong>. It enjoys the present moment, responds openly, and likes creating a lively atmosphere. It often brings comfort through enthusiasm, friendliness, and shared experience.",
-            summary: "With this profile, the AI robot would likely seem upbeat, expressive, and easy to connect with. It may brighten the room, respond naturally in the moment, and make daily life feel more playful and engaged."
-        }
-    };
-
-    return map[type] || {
+    const profiles = uiCopy?.results?.profiles || {};
+    return profiles[type] || uiCopy?.results?.fallbackProfile || {
         description: "This personality package was generated, but the matching description could not be found.",
-        summary: "If this appears, the result mapping needs to be corrected in the code."
+        summary: "If this appears, the result mapping needs to be corrected in the data."
     };
 }
 
-/* ---------------- UTILS ---------------- */
+/* ---------------- COPY HELPERS ---------------- */
 
 function normalizeRobotName(value) {
     return value.replace(/\s+/g, " ").trim();
@@ -780,18 +696,26 @@ function escapeHtml(value) {
 function robotReferenceMarkup(capitalizeYour = false) {
     const pronoun = capitalizeYour ? "Your" : "your";
 
-    if (!robotName) {
-        return `${pronoun} AI robot`;
-    }
+    if (!robotName) return `${pronoun} AI robot`;
 
     const safeName = escapeHtml(robotName);
     return `${pronoun} AI robot [<span class="robot-name">${safeName}</span>]`;
+}
+
+function robotQuestionMarkup() {
+    return uiCopy.questionScreen.promptTemplate.replace("{robotReference}", robotReferenceMarkup(false));
+}
+
+function robotOptionMarkup(text) {
+    const safeName = escapeHtml(robotName || "AI robot");
+    return `[<span class="robot-name">${safeName}</span>] ${escapeHtml(text)}`;
 }
 
 function replaceRobotNameMarkup(text) {
     const lowerToken = "__ROBOT_REF_LOWER__";
     const upperToken = "__ROBOT_REF_UPPER__";
 
+    // Tokens prevent already-inserted robot markup from being replaced twice.
     return escapeHtml(text)
         .replaceAll("your AI robot", lowerToken)
         .replaceAll("the AI robot", lowerToken)
@@ -801,14 +725,7 @@ function replaceRobotNameMarkup(text) {
         .replaceAll(lowerToken, robotReferenceMarkup(false));
 }
 
-function robotQuestionMarkup() {
-    return `What should ${robotReferenceMarkup(false)} do?`;
-}
-
-function robotOptionMarkup(text) {
-    const safeName = escapeHtml(robotName || "AI robot");
-    return `[<span class="robot-name">${safeName}</span>] ${escapeHtml(text)}`;
-}
+/* ---------------- AUDIO ---------------- */
 
 function bindButtonPress(button, handler) {
     button.mousePressed(() => {
@@ -828,7 +745,7 @@ function playClickSound() {
     };
 
     if (getAudioContext().state !== "running") {
-        userStartAudio().then(play).catch(() => { });
+        userStartAudio().then(play).catch(() => {});
         return;
     }
 
@@ -843,7 +760,7 @@ function playCompletionBeep() {
     };
 
     if (getAudioContext().state !== "running") {
-        userStartAudio().then(play).catch(() => { });
+        userStartAudio().then(play).catch(() => {});
         return;
     }
 
@@ -868,7 +785,7 @@ function scheduleHeartbeatLoop() {
         };
 
         if (getAudioContext().state !== "running") {
-            userStartAudio().then(play).catch(() => { });
+            userStartAudio().then(play).catch(() => {});
             return;
         }
 
@@ -884,6 +801,7 @@ function startHeartbeatGlowPulseLoop(loopDurationMs) {
 }
 
 function queueHeartbeatGlowPulseCycle(loopDurationMs) {
+    // Four timed pulses keep the glow aligned with the grouped beats in the audio file.
     HEARTBEAT_PULSE_OFFSETS.forEach((offsetRatio) => {
         const timeoutId = window.setTimeout(() => {
             heartbeatPulseTimeoutIds = heartbeatPulseTimeoutIds.filter((id) => id !== timeoutId);
@@ -924,12 +842,12 @@ function stopHeartbeatLoop() {
         heartbeatGlowEl.removeClass("heartbeat-glow-pulse");
     }
 
-    if (!heartbeatSound) return;
-
-    if (heartbeatSound.isPlaying()) {
+    if (heartbeatSound?.isPlaying()) {
         heartbeatSound.stop();
     }
 }
+
+/* ---------------- LOADER TASKS ---------------- */
 
 function buildTaskList(parent, steps) {
     const list = createDiv("").addClass("task-list").parent(parent);
@@ -963,10 +881,13 @@ function updateTaskListState(progress, markComplete = false) {
     });
 }
 
+/* ---------------- GENERAL UTILS ---------------- */
+
 function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
+    for (let i = arr.length - 1; i > 0; i -= 1) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
+
     return arr;
 }

@@ -39,7 +39,7 @@ The project borrows the structure and authority of MBTI-style quizzes, but uses 
 ## Tech Stack
 - p5.js for canvas and DOM UI
 - HTML/CSS for layout and styling
-- JSON for the scenario bank
+- JSON for the scenario bank and the shared UI copy
 
 ## Project Structure
 - `index.html` main page
@@ -47,6 +47,7 @@ The project borrows the structure and authority of MBTI-style quizzes, but uses 
 - `css/style.css` interface styling
 - `js/script.js` application logic
 - `data/questions.json` scenario bank
+- `data/ui-copy.json` long-form interface copy and personality descriptions
 - `notes/` planning, research, and writing notes
 
 ## How To Run
@@ -63,7 +64,6 @@ Option 2: Python
 ## Verified Remaining Work
 - Do a final copy pass on the robot-name wording across the scenarios and later screens
 - Do a final browser QA pass on desktop and mobile across the current full flow
-- Clean outdated comments or leftover dev notes in the code
 
 ## Notes
 - The app still computes an MBTI-style result internally, but the result shown to the user is a custom description rather than a visible 4-letter code.

@@ -138,7 +138,6 @@ Current behavior:
 ## Verified Next Steps
 - Do a final cross-screen copy pass now that naming is implemented
 - Run a browser QA pass for spacing, wrapping, and mobile layout
-- Remove outdated comments or leftover dev notes that no longer match the current build
 
 ## Optional Upgrades Later
 - Expand the result into a fuller dossier with trait bullets or system specs
