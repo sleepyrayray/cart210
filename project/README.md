@@ -20,8 +20,9 @@ The project borrows the structure and authority of MBTI-style quizzes, but uses 
 - Results screen with a description-only personality output
 - No visible 4-letter MBTI code in the final result
 - No celebrity / famous-person matching in the result
+- Click sound on button interactions
 - Wireless transfer screen for installing the personality package
-- Final installation-complete screen with a simplified confirmation message
+- Final installation-complete screen with a completion beep plus a delayed heartbeat sound and glow
 
 ## Current App Flow
 1. Landing / consent
@@ -58,7 +59,8 @@ Option 2: Python
 
 ## Verified Remaining Work
 - Add a short intro animation before the landing screen, with the title appearing first and the main container opening after it
-- Add click sounds and a heartbeat sound on the results screen, plus a mute toggle
+- Add a mute toggle for the current sound system
+- Fine-tune the current sound mix and timing in the browser
 - Do a final copy pass on the robot-name wording across the scenarios and later screens
 - Do a browser QA pass on desktop and mobile now that the naming feature is added
 - Clean outdated comments or leftover dev notes in the code

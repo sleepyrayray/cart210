@@ -21,6 +21,18 @@ let processingDurationMs = 2600;
 let showViewResults = false;
 let installStartMs = 0;
 let installDurationMs = 9200;
+let clickSound = null;
+let clickSoundReady = false;
+let completionBeepSound = null;
+let completionBeepReady = false;
+let heartbeatSound = null;
+let heartbeatSoundReady = false;
+let heartbeatTimerId = null;
+let heartbeatPulseIntervalId = null;
+let heartbeatPulseTimeoutIds = [];
+let heartbeatGlowEl = null;
+const HEARTBEAT_PLAYBACK_RATE = 1.0;
+const HEARTBEAT_PULSE_OFFSETS = [0, 0.13, 0.56, 0.69];
 
 // loader DOM refs
 let loaderFillEl = null;
@@ -30,6 +42,45 @@ let processingStatusEl = null;
 
 function preload() {
     loadJSON("data/questions.json", onQuestionsLoaded, onQuestionsError);
+    clickSound = loadSound(
+        "assets/sounds/click.m4a",
+        () => {
+            clickSoundReady = true;
+            clickSound.setVolume(0.35);
+            clickSound.playMode("restart");
+        },
+        (err) => {
+            console.warn("Could not load click.m4a", err);
+            clickSoundReady = false;
+            clickSound = null;
+        }
+    );
+    completionBeepSound = loadSound(
+        "assets/sounds/beep.m4a",
+        () => {
+            completionBeepReady = true;
+            completionBeepSound.setVolume(0.4);
+            completionBeepSound.playMode("restart");
+        },
+        (err) => {
+            console.warn("Could not load beep.m4a", err);
+            completionBeepReady = false;
+            completionBeepSound = null;
+        }
+    );
+    heartbeatSound = loadSound(
+        "assets/sounds/heart-beat.m4a",
+        () => {
+            heartbeatSoundReady = true;
+            heartbeatSound.setVolume(0.24);
+            heartbeatSound.rate(HEARTBEAT_PLAYBACK_RATE);
+        },
+        (err) => {
+            console.warn("Could not load heart-beat.m4a", err);
+            heartbeatSoundReady = false;
+            heartbeatSound = null;
+        }
+    );
 }
 
 function onQuestionsLoaded(data) {
@@ -124,8 +175,11 @@ function buildUIRoot() {
 }
 
 function clearUI() {
+    stopHeartbeatLoop();
+
     const ui = select("#uiRoot");
     if (ui) ui.html("");
+    heartbeatGlowEl = null;
 
     // reset loader refs
     loaderFillEl = null;
@@ -148,7 +202,7 @@ function initErrorTitle() {
 
     const row = createDiv("").addClass("row").parent(body);
     const btn = createButton("Retry").addClass("btn primary").parent(row);
-    btn.mousePressed(() => location.reload());
+    bindButtonPress(btn, () => location.reload());
 }
 
 function initTitle() {
@@ -207,7 +261,7 @@ function initTitle() {
     consentCheckboxAcknowledge.changed(updateTitleStartState);
     updateTitleStartState();
 
-    titleStartBtn.mousePressed(() => {
+    bindButtonPress(titleStartBtn, () => {
         if (!(consentCheckboxAuth.checked() && consentCheckboxAcknowledge.checked())) return;
         showRobotNamePrompt(() => startSession());
     });
@@ -297,12 +351,12 @@ function showRobotNamePrompt(onConfirm) {
         }
     });
 
-    backBtn.mousePressed(() => {
+    bindButtonPress(backBtn, () => {
         robotName = "";
         overlay.remove();
     });
 
-    confirmBtn.mousePressed(submitRobotName);
+    bindButtonPress(confirmBtn, submitRobotName);
     setTimeout(() => input.elt.focus(), 0);
 }
 
@@ -390,13 +444,13 @@ function renderQuestion() {
     if (!selections[currentIndex]) nextBtn.attribute("disabled", "true");
 
     if (backBtn) {
-        backBtn.mousePressed(() => {
+        bindButtonPress(backBtn, () => {
             currentIndex--;
             renderQuestion();
         });
     }
 
-    nextBtn.mousePressed(() => {
+    bindButtonPress(nextBtn, () => {
         if (!selections[currentIndex]) return;
         if (currentIndex < questions.length - 1) {
             currentIndex++;
@@ -459,7 +513,7 @@ function renderProcessing() {
     btn.id("viewResultsBtn");
     btn.attribute("disabled", "true");
 
-    btn.mousePressed(() => {
+    bindButtonPress(btn, () => {
         if (!showViewResults) return;
         renderResults();
     });
@@ -488,8 +542,8 @@ function renderResults() {
     const reconfigureBtn = createButton("Reconfigure").addClass("btn").parent(footer);
     const installBtn = createButton("Install Personality").addClass("btn primary").parent(footer);
 
-    reconfigureBtn.mousePressed(() => startSession());
-    installBtn.mousePressed(() => renderInstalling());
+    bindButtonPress(reconfigureBtn, () => startSession());
+    bindButtonPress(installBtn, () => renderInstalling());
 }
 
 function renderInstalling() {
@@ -521,6 +575,10 @@ function renderInstalling() {
 function renderDownloaded() {
     state = "downloaded";
     clearUI();
+    playCompletionBeep();
+
+    const ui = select("#uiRoot");
+    heartbeatGlowEl = createDiv("").addClass("heartbeat-glow").parent(ui);
 
     const panel = buildPanel("Installation Complete", "", "Export Status");
     const body = panel.body;
@@ -535,7 +593,8 @@ function renderDownloaded() {
     const footer = createDiv("").addClass("footer center-footer").parent(body);
     const homeBtn = createButton("Return to Home").addClass("btn").parent(footer);
 
-    homeBtn.mousePressed(() => initTitle());
+    bindButtonPress(homeBtn, () => initTitle());
+    scheduleHeartbeatLoop();
 }
 
 /* ---------------- SCORING ---------------- */
@@ -676,6 +735,127 @@ function robotQuestionMarkup() {
 function robotOptionMarkup(text) {
     const safeName = escapeHtml(robotName || "AI robot");
     return `[<span class="robot-name">${safeName}</span>] ${escapeHtml(text)}`;
+}
+
+function bindButtonPress(button, handler) {
+    button.mousePressed(() => {
+        if (button.elt.disabled) return;
+        playClickSound();
+        handler();
+    });
+
+    return button;
+}
+
+function playClickSound() {
+    if (!clickSoundReady || !clickSound) return;
+
+    const play = () => {
+        clickSound.play();
+    };
+
+    if (getAudioContext().state !== "running") {
+        userStartAudio().then(play).catch(() => { });
+        return;
+    }
+
+    play();
+}
+
+function playCompletionBeep() {
+    if (!completionBeepReady || !completionBeepSound) return;
+
+    const play = () => {
+        completionBeepSound.play();
+    };
+
+    if (getAudioContext().state !== "running") {
+        userStartAudio().then(play).catch(() => { });
+        return;
+    }
+
+    play();
+}
+
+function scheduleHeartbeatLoop() {
+    stopHeartbeatLoop();
+
+    heartbeatTimerId = window.setTimeout(() => {
+        heartbeatTimerId = null;
+
+        if (state !== "downloaded" || !heartbeatSoundReady || !heartbeatSound) return;
+
+        const loopDurationMs = (heartbeatSound.duration() / HEARTBEAT_PLAYBACK_RATE) * 1000;
+        startHeartbeatGlowPulseLoop(loopDurationMs);
+
+        const play = () => {
+            if (state !== "downloaded" || !heartbeatSoundReady || !heartbeatSound) return;
+            heartbeatSound.stop();
+            heartbeatSound.loop();
+        };
+
+        if (getAudioContext().state !== "running") {
+            userStartAudio().then(play).catch(() => { });
+            return;
+        }
+
+        play();
+    }, 1500);
+}
+
+function startHeartbeatGlowPulseLoop(loopDurationMs) {
+    queueHeartbeatGlowPulseCycle(loopDurationMs);
+    heartbeatPulseIntervalId = window.setInterval(() => {
+        queueHeartbeatGlowPulseCycle(loopDurationMs);
+    }, loopDurationMs);
+}
+
+function queueHeartbeatGlowPulseCycle(loopDurationMs) {
+    HEARTBEAT_PULSE_OFFSETS.forEach((offsetRatio) => {
+        const timeoutId = window.setTimeout(() => {
+            heartbeatPulseTimeoutIds = heartbeatPulseTimeoutIds.filter((id) => id !== timeoutId);
+
+            if (state !== "downloaded" || !heartbeatGlowEl) return;
+            triggerHeartbeatGlowPulse();
+        }, loopDurationMs * offsetRatio);
+
+        heartbeatPulseTimeoutIds.push(timeoutId);
+    });
+}
+
+function triggerHeartbeatGlowPulse() {
+    if (!heartbeatGlowEl) return;
+
+    heartbeatGlowEl.removeClass("heartbeat-glow-pulse");
+    void heartbeatGlowEl.elt.offsetWidth;
+    heartbeatGlowEl.addClass("heartbeat-glow-pulse");
+}
+
+function stopHeartbeatLoop() {
+    if (heartbeatTimerId !== null) {
+        clearTimeout(heartbeatTimerId);
+        heartbeatTimerId = null;
+    }
+
+    if (heartbeatPulseIntervalId !== null) {
+        clearInterval(heartbeatPulseIntervalId);
+        heartbeatPulseIntervalId = null;
+    }
+
+    if (heartbeatPulseTimeoutIds.length) {
+        heartbeatPulseTimeoutIds.forEach((timeoutId) => clearTimeout(timeoutId));
+        heartbeatPulseTimeoutIds = [];
+    }
+
+    if (heartbeatGlowEl) {
+        heartbeatGlowEl.removeClass("heartbeat-glow-pulse");
+    }
+
+    if (!heartbeatSound) return;
+
+    if (heartbeatSound.isPlaying()) {
+        heartbeatSound.stop();
+    }
 }
 
 function buildTaskList(parent, steps) {

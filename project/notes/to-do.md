@@ -10,8 +10,7 @@ Constraint for that work:
 - Keep `Human` as the system label for the user so the software stays detached and dystopian.
 
 ## Sound
-- [ ] Add click sounds for interaction moments.
-- [ ] Add a heartbeat sound on the results screen so it feels like the robot is now "alive" with a personality.
+- [ ] Fine-tune the click, completion beep, and heartbeat levels/timing in the browser.
 - [ ] Add a mute toggle that fits the current interface.
 
 ## Opening Animation
@@ -41,8 +40,8 @@ Constraint for that work:
 
 ### Verified answer to “what is left?”
 The main required app work left is:
-1. sounds
-2. opening animation
+1. opening animation
+2. audio polish + mute toggle
 3. a final browser QA + cleanup pass
 
 Everything else is optional polish or class-submission work.

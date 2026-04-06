@@ -44,9 +44,12 @@ canvas {
     display: grid;
     place-items: center;
     padding: 32px 18px;
+    overflow: hidden;
 }
 
 .panel {
+    position: relative;
+    z-index: 1;
     width: min(980px, 92vw);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
     border: 1px solid var(--line);
@@ -55,6 +58,43 @@ canvas {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     overflow: hidden;
+}
+
+.heartbeat-glow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(90vw, 1080px);
+    aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%) scale(0.86);
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    background:
+        radial-gradient(circle, rgba(114, 247, 214, 0.28) 0%, rgba(114, 247, 214, 0.18) 18%, rgba(122, 167, 255, 0.14) 36%, rgba(122, 167, 255, 0.06) 54%, transparent 74%);
+    filter: blur(34px);
+}
+
+.heartbeat-glow.heartbeat-glow-pulse {
+    animation: heartbeatGlowPulse 430ms ease-out;
+}
+
+@keyframes heartbeatGlowPulse {
+    0% {
+        opacity: 0.1;
+        transform: translate(-50%, -50%) scale(0.86);
+    }
+
+    35% {
+        opacity: 0.44;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
 }
 
 .panel-header {

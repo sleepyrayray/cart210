@@ -118,6 +118,8 @@ Current behavior:
 - Short confirmation message
 - `Congratulations, Human.` line above the message
 - The completion message uses the current robot name
+- A short completion beep plays when this screen appears
+- A delayed heartbeat sound and centered glow begin shortly after the screen appears
 - Single centered `Return to Home` button
 - No status cards / KPI blocks
 
@@ -135,8 +137,8 @@ Current behavior:
 - Add a short opening animation before the landing screen
 - Animate the `AI Personality Builder` title as an intro, then fade it out
 - Animate the landing container opening into view after that
-- Add click sounds throughout the flow
-- Add a heartbeat sound on the results screen so the robot feels newly "alive"
+- Add a mute toggle for the current click / completion / heartbeat sounds
+- Do a browser sound-mix pass for the current audio timing and levels
 - Do a final cross-screen copy pass now that naming is implemented
 - Run a browser QA pass for spacing, wrapping, and mobile layout
 
