@@ -328,6 +328,8 @@ p {
     display: grid;
     place-items: center;
     padding: 24px;
+    box-sizing: border-box;
+    overflow-y: auto;
     background: rgba(7, 10, 18, 0.58);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
@@ -336,6 +338,8 @@ p {
 
 .popup-card {
     width: min(480px, calc(100vw - 48px));
+    max-width: 100%;
+    box-sizing: border-box;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.05));
@@ -607,5 +611,25 @@ p {
 @media (max-width: 760px) {
     .options {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .popup-overlay {
+        padding: 16px;
+    }
+
+    .popup-card {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .popup-actions {
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .popup-actions .btn {
+        flex: 1 1 0;
     }
 }

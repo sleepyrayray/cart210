@@ -181,7 +181,7 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
 
-/* ---------------- APP SHELL ---------------- */
+/* App shell */
 
 function hasLoadedCoreContent() {
     return rawQuestions.length > 0 && uiCopy;
@@ -238,7 +238,7 @@ function buildPanel(title, sub, badgeText) {
     return { panel, body };
 }
 
-/* ---------------- LANDING + INTRO ---------------- */
+/* Landing and intro */
 
 function initErrorTitle() {
     state = "title";
@@ -418,7 +418,7 @@ function showRobotNamePrompt(onConfirm) {
     setTimeout(() => input.elt.focus(), 0);
 }
 
-/* ---------------- SESSION FLOW ---------------- */
+/* Session flow */
 
 function startSession() {
     // Each run starts from a fresh clone so shuffling never mutates the source question bank.
@@ -651,7 +651,7 @@ function renderDownloaded() {
     scheduleHeartbeatLoop();
 }
 
-/* ---------------- SCORING ---------------- */
+/* Scoring */
 
 function recomputeScores() {
     scores = { E: 0, I: 0, N: 0, S: 0, T: 0, F: 0, J: 0, P: 0 };
@@ -678,7 +678,7 @@ function personalityProfileFor(type) {
     };
 }
 
-/* ---------------- COPY HELPERS ---------------- */
+/* Copy helpers */
 
 function normalizeRobotName(value) {
     return value.replace(/\s+/g, " ").trim();
@@ -725,7 +725,7 @@ function replaceRobotNameMarkup(text) {
         .replaceAll(lowerToken, robotReferenceMarkup(false));
 }
 
-/* ---------------- AUDIO ---------------- */
+/* Audio */
 
 function bindButtonPress(button, handler) {
     button.mousePressed(() => {
@@ -847,7 +847,7 @@ function stopHeartbeatLoop() {
     }
 }
 
-/* ---------------- LOADER TASKS ---------------- */
+/* Loader tasks */
 
 function buildTaskList(parent, steps) {
     const list = createDiv("").addClass("task-list").parent(parent);
@@ -881,7 +881,7 @@ function updateTaskListState(progress, markComplete = false) {
     });
 }
 
-/* ---------------- GENERAL UTILS ---------------- */
+/* General helpers */
 
 function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i -= 1) {
