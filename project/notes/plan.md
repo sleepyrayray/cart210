@@ -27,10 +27,11 @@ Purpose:
 - give the software a more intentional intro before the interface appears
 - make the system feel staged, polished, and slightly theatrical
 
-Planned behavior:
+Current behavior:
 - Show `AI Personality Builder` as a short animated intro title
+- Show a smaller `designed by Ray Hernaez` line above the title
 - Fade that title out
-- Animate the landing-page container opening into view
+- Fade the dark overlay away to reveal the landing page underneath
 - Keep the timing brief so the flow still feels smooth
 
 ### 1) Landing / Consent Screen
@@ -44,6 +45,7 @@ Current behavior:
 - Inline explanation is shown directly on the page
 - Two checkboxes must both be checked before the start button activates
 - Start button is centered
+- A persistent footer stays pinned to the bottom of the screen
 
 ### 1.5) Robot Registration Popup
 Purpose:
@@ -134,13 +136,9 @@ Current behavior:
 - The 4-letter result is used internally only
 
 ## Verified Next Steps
-- Add a short opening animation before the landing screen
-- Animate the `AI Personality Builder` title as an intro, then fade it out
-- Animate the landing container opening into view after that
-- Add a mute toggle for the current click / completion / heartbeat sounds
-- Do a browser sound-mix pass for the current audio timing and levels
 - Do a final cross-screen copy pass now that naming is implemented
 - Run a browser QA pass for spacing, wrapping, and mobile layout
+- Remove outdated comments or leftover dev notes that no longer match the current build
 
 ## Optional Upgrades Later
 - Expand the result into a fuller dossier with trait bullets or system specs

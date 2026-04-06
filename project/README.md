@@ -7,6 +7,7 @@ AI Personality Builder is an interactive p5.js project framed as an official sys
 The project borrows the structure and authority of MBTI-style quizzes, but uses an in-world software interface to explore categorization, profiling, and how systems can sound confident while making simplified judgments.
 
 ## Current Prototype Features
+- Opening intro animation with a dark screen, centered title, and fade-out reveal into the landing page
 - Landing screen with an inline description of the software
 - Two required consent checkboxes before the configuration can begin
 - Robot registration popup before the scenarios begin
@@ -23,15 +24,17 @@ The project borrows the structure and authority of MBTI-style quizzes, but uses 
 - Click sound on button interactions
 - Wireless transfer screen for installing the personality package
 - Final installation-complete screen with a completion beep plus a delayed heartbeat sound and glow
+- Persistent footer with copyright, name, and course info
 
 ## Current App Flow
-1. Landing / consent
-2. Robot registration popup
-3. 20-scenario configuration
-4. Compiling Personality Package
-5. Personality Package Generated
-6. Wireless personality transfer
-7. Installation Complete
+1. Opening intro animation
+2. Landing / consent
+3. Robot registration popup
+4. 20-scenario configuration
+5. Compiling Personality Package
+6. Personality Package Generated
+7. Wireless personality transfer
+8. Installation Complete
 
 ## Tech Stack
 - p5.js for canvas and DOM UI
@@ -58,11 +61,8 @@ Option 2: Python
 - Open the local URL in your browser
 
 ## Verified Remaining Work
-- Add a short intro animation before the landing screen, with the title appearing first and the main container opening after it
-- Add a mute toggle for the current sound system
-- Fine-tune the current sound mix and timing in the browser
 - Do a final copy pass on the robot-name wording across the scenarios and later screens
-- Do a browser QA pass on desktop and mobile now that the naming feature is added
+- Do a final browser QA pass on desktop and mobile across the current full flow
 - Clean outdated comments or leftover dev notes in the code
 
 ## Notes

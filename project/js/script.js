@@ -31,6 +31,9 @@ let heartbeatTimerId = null;
 let heartbeatPulseIntervalId = null;
 let heartbeatPulseTimeoutIds = [];
 let heartbeatGlowEl = null;
+let openingIntroPlayed = false;
+let openingIntroOverlayEl = null;
+let openingIntroTimeoutIds = [];
 const HEARTBEAT_PLAYBACK_RATE = 1.0;
 const HEARTBEAT_PULSE_OFFSETS = [0, 0.13, 0.56, 0.69];
 
@@ -100,10 +103,10 @@ function setup() {
     buildUIRoot();
 
     if (rawQuestions.length > 0) {
-        initTitle();
+        initTitle(true);
     } else {
         setTimeout(() => {
-            if (rawQuestions.length > 0) initTitle();
+            if (rawQuestions.length > 0) initTitle(true);
             else initErrorTitle();
         }, 400);
     }
@@ -172,10 +175,16 @@ function buildUIRoot() {
     ui.addClass("ui");
     ui.id("uiRoot");
     ui.parent("app");
+
+    const footer = createDiv(formatAppFooterText());
+    footer.addClass("app-footer");
+    footer.id("appFooter");
+    footer.parent("app");
 }
 
 function clearUI() {
     stopHeartbeatLoop();
+    clearOpeningIntro();
 
     const ui = select("#uiRoot");
     if (ui) ui.html("");
@@ -186,6 +195,14 @@ function clearUI() {
     loaderPctEl = null;
     loaderTaskEls = [];
     processingStatusEl = null;
+}
+
+function formatAppFooterText() {
+    const yearText = new Intl.DateTimeFormat("en-US", {
+        year: "numeric"
+    }).format(new Date());
+
+    return `© ${yearText} Ray Hernaez | Project for CART210`;
 }
 
 function initErrorTitle() {
@@ -205,7 +222,7 @@ function initErrorTitle() {
     bindButtonPress(btn, () => location.reload());
 }
 
-function initTitle() {
+function initTitle(withOpeningIntro = false) {
     state = "title";
     robotName = "";
     clearUI();
@@ -265,6 +282,10 @@ function initTitle() {
         if (!(consentCheckboxAuth.checked() && consentCheckboxAcknowledge.checked())) return;
         showRobotNamePrompt(() => startSession());
     });
+
+    if (withOpeningIntro) {
+        showOpeningIntro();
+    }
 }
 
 function kpiCard(parent, title, value) {
@@ -291,6 +312,58 @@ function buildPanel(title, sub, badgeText) {
     const body = createDiv("").addClass("panel-body").parent(panel);
 
     return { panel, body };
+}
+
+function showOpeningIntro() {
+    if (openingIntroPlayed) return;
+    openingIntroPlayed = true;
+
+    const ui = select("#uiRoot");
+    const overlay = createDiv("").addClass("opening-intro").parent(ui);
+    const copy = createDiv("").addClass("opening-intro-copy").parent(overlay);
+    createDiv("designed by Ray Hernaez").addClass("opening-intro-sub").parent(copy);
+    createDiv("AI Personality Builder").addClass("opening-intro-title").parent(copy);
+    openingIntroOverlayEl = overlay;
+
+    queueOpeningIntroTimeout(() => {
+        if (openingIntroOverlayEl) {
+            openingIntroOverlayEl.addClass("opening-intro-visible");
+        }
+    }, 60);
+
+    queueOpeningIntroTimeout(() => {
+        if (openingIntroOverlayEl) {
+            openingIntroOverlayEl.addClass("opening-intro-exit");
+        }
+    }, 2500);
+
+    queueOpeningIntroTimeout(() => {
+        if (openingIntroOverlayEl) {
+            openingIntroOverlayEl.remove();
+            openingIntroOverlayEl = null;
+        }
+    }, 3500);
+}
+
+function queueOpeningIntroTimeout(handler, delayMs) {
+    const timeoutId = window.setTimeout(() => {
+        openingIntroTimeoutIds = openingIntroTimeoutIds.filter((id) => id !== timeoutId);
+        handler();
+    }, delayMs);
+
+    openingIntroTimeoutIds.push(timeoutId);
+}
+
+function clearOpeningIntro() {
+    if (openingIntroTimeoutIds.length) {
+        openingIntroTimeoutIds.forEach((timeoutId) => clearTimeout(timeoutId));
+        openingIntroTimeoutIds = [];
+    }
+
+    if (openingIntroOverlayEl) {
+        openingIntroOverlayEl.remove();
+        openingIntroOverlayEl = null;
+    }
 }
 
 function showRobotNamePrompt(onConfirm) {

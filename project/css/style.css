@@ -43,8 +43,24 @@ canvas {
     inset: 0;
     display: grid;
     place-items: center;
-    padding: 32px 18px;
+    padding: 32px 18px 76px;
     overflow: hidden;
+}
+
+.app-footer {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    z-index: 45;
+    width: min(92vw, 980px);
+    box-sizing: border-box;
+    text-align: center;
+    pointer-events: none;
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .panel {
@@ -95,6 +111,64 @@ canvas {
         opacity: 0;
         transform: translate(-50%, -50%) scale(0.9);
     }
+}
+
+.opening-intro {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    display: grid;
+    place-items: center;
+    background: rgba(4, 6, 12, 1);
+    opacity: 1;
+    transition: opacity 1000ms ease;
+}
+
+.opening-intro-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    filter: blur(10px);
+    transition: opacity 900ms ease, transform 900ms ease, filter 900ms ease;
+}
+
+.opening-intro-visible .opening-intro-copy {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+}
+
+.opening-intro-exit {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.opening-intro-exit .opening-intro-copy {
+    opacity: 0;
+    transform: translateY(-8px) scale(1.02);
+    filter: blur(12px);
+}
+
+.opening-intro-title {
+    width: min(92vw, 960px);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.96);
+    font-size: clamp(42px, 7vw, 92px);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-shadow: 0 0 36px rgba(114, 247, 214, 0.18);
+}
+
+.opening-intro-sub {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: clamp(12px, 1.8vw, 16px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
 .panel-header {
