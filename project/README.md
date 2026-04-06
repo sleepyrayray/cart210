@@ -9,8 +9,10 @@ The project borrows the structure and authority of MBTI-style quizzes, but uses 
 ## Current Prototype Features
 - Landing screen with an inline description of the software
 - Two required consent checkboxes before the configuration can begin
+- Robot registration popup before the scenarios begin
 - 20 short scenarios loaded from `data/questions.json`
-- Natural scenario wording using `You ... The AI robot...`
+- Scenario prompts that adapt to the current robot name
+- Session-only robot naming that resets when returning home or refreshing
 - Formal system voice that still refers to the user as `Human`
 - Randomized scenario order and randomized option order on each run
 - Back/Next navigation with stored selections
@@ -23,11 +25,12 @@ The project borrows the structure and authority of MBTI-style quizzes, but uses 
 
 ## Current App Flow
 1. Landing / consent
-2. 20-scenario configuration
-3. Compiling Personality Package
-4. Personality Package Generated
-5. Wireless personality transfer
-6. Installation Complete
+2. Robot registration popup
+3. 20-scenario configuration
+4. Compiling Personality Package
+5. Personality Package Generated
+6. Wireless personality transfer
+7. Installation Complete
 
 ## Tech Stack
 - p5.js for canvas and DOM UI
@@ -36,6 +39,7 @@ The project borrows the structure and authority of MBTI-style quizzes, but uses 
 
 ## Project Structure
 - `index.html` main page
+- `assets/` sounds and other media assets
 - `css/style.css` interface styling
 - `js/script.js` application logic
 - `data/questions.json` scenario bank
@@ -55,9 +59,8 @@ Option 2: Python
 ## Verified Remaining Work
 - Add a short intro animation before the landing screen, with the title appearing first and the main container opening after it
 - Add click sounds and a heartbeat sound on the results screen, plus a mute toggle
-- Ask for the robot's name before the quiz starts
-- Use that robot name throughout the scenario, result, transfer, and completion screens
-- Do a browser QA pass on desktop and mobile after the naming feature is added
+- Do a final copy pass on the robot-name wording across the scenarios and later screens
+- Do a browser QA pass on desktop and mobile now that the naming feature is added
 - Clean outdated comments or leftover dev notes in the code
 
 ## Notes

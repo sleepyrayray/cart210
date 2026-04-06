@@ -3,9 +3,8 @@
 This list only includes work that is still left.
 
 ## Highest Priority
-- [ ] Add a setup step where the user enters the name of their AI robot before the scenario flow starts.
-- [ ] Replace the generic phrase `AI robot` with that chosen robot name across the scenario, result, transfer, and completion screens.
-- [ ] Re-check all copy after the naming feature is wired in so every sentence still reads naturally.
+- [ ] Do one final copy pass on the robot-name wording so every sentence still reads naturally.
+- [ ] Test the robot registration popup flow on both desktop and mobile widths.
 
 Constraint for that work:
 - Keep `Human` as the system label for the user so the software stays detached and dystopian.
@@ -23,7 +22,7 @@ Constraint for that work:
 
 ## QA + Cleanup
 - [ ] Test the full flow in the browser on both desktop and mobile widths.
-- [ ] Check scenario-card wrapping and spacing after the naming feature is added.
+- [ ] Check scenario-card wrapping and spacing now that the robot name appears inside the question and options.
 - [ ] Remove outdated code comments or leftover dev notes that no longer match the current prototype.
 - [ ] Do one final consistency pass on button labels, headings, and status text.
 
@@ -31,6 +30,7 @@ Constraint for that work:
 - [ ] Expand the results into a fuller dossier with trait bullets or system specs.
 - [ ] Add subtle screen transitions or micro-animations.
 - [ ] Add package metadata on the completion screen, such as package ID or verification details.
+- [ ] Add a footer that stays pinned to the bottom of the screen with the date, `Ray Hernaez`, and `Project for CART210`.
 
 ## Later Submission Tasks
 - [ ] Draft the artist statement.
@@ -41,9 +41,8 @@ Constraint for that work:
 
 ### Verified answer to “what is left?”
 The main required app work left is:
-1. robot naming
-2. sounds
-3. opening animation
-4. a final browser QA + cleanup pass
+1. sounds
+2. opening animation
+3. a final browser QA + cleanup pass
 
 Everything else is optional polish or class-submission work.

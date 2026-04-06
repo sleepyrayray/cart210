@@ -16,7 +16,7 @@ The tone should feel:
 - The app should feel formal, but not cold.
 - The writing should be beginner-friendly and easy to scan.
 - The prompts should sound natural, not robotic.
-- The system still uses the phrase `AI robot` in the live build, but the long-term direction is to replace that with a user-entered robot name.
+- The robot name is now entered by the user at the start of the flow and then reused across the later screens.
 - The interface should keep calling the user `Human` in the system framing. That distance is intentional and supports the dystopian concept.
 - The app should care more about configuring the robot than validating the person using it.
 
@@ -45,6 +45,18 @@ Current behavior:
 - Two checkboxes must both be checked before the start button activates
 - Start button is centered
 
+### 1.5) Robot Registration Popup
+Purpose:
+- capture the current robot name before configuration begins
+- make the later scenario and result copy feel more specific
+
+Current behavior:
+- Appears right after `Start Configuration`
+- Title: `AI Robot Registration`
+- Includes a name input, `Back`, and `Confirm Name`
+- Requires a non-empty robot name before the scenario flow starts
+- Uses session-only naming that resets on return home or page refresh
+
 ### 2) Scenario Screen
 Purpose:
 - let the user configure the robot through 20 short scenarios
@@ -53,7 +65,8 @@ Current behavior:
 - Header badge: `AI Personality Profile Setup`
 - Progress bar and scenario counter
 - Scenario text is centered
-- The phrase `The AI robot...` appears on its own line inside the prompt
+- The second prompt line is phrased as a question using the current robot name
+- Each option begins with the bracketed robot name
 - Two option cards appear side by side
 - Back button is hidden on the first scenario
 - Next button stays disabled until an option is selected
@@ -78,6 +91,7 @@ Current behavior:
 - One centered result container
 - Two-paragraph personality write-up
 - Key trait words are visually emphasized
+- The summary copy uses the current robot name
 - No visible MBTI code
 - No celebrity / famous-person comparison
 - Buttons:
@@ -93,6 +107,7 @@ Current behavior:
 - Slower loading bar than the compile screen
 - No task list on this screen
 - The transfer is framed as a wireless installation process
+- The transfer copy uses the current robot name
 
 ### 6) Installation Complete Screen
 Purpose:
@@ -102,6 +117,7 @@ Current behavior:
 - Title: `Installation Complete`
 - Short confirmation message
 - `Congratulations, Human.` line above the message
+- The completion message uses the current robot name
 - Single centered `Return to Home` button
 - No status cards / KPI blocks
 
@@ -119,11 +135,9 @@ Current behavior:
 - Add a short opening animation before the landing screen
 - Animate the `AI Personality Builder` title as an intro, then fade it out
 - Animate the landing container opening into view after that
-- Add a robot naming step before the scenario flow
-- Use that name in place of `AI robot` across the app
 - Add click sounds throughout the flow
 - Add a heartbeat sound on the results screen so the robot feels newly "alive"
-- Do a final cross-screen copy pass after naming is implemented
+- Do a final cross-screen copy pass now that naming is implemented
 - Run a browser QA pass for spacing, wrapping, and mobile layout
 
 ## Optional Upgrades Later

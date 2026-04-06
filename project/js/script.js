@@ -7,6 +7,7 @@ let state = "loading"; // loading | title | question | processing | results | in
 let rawQuestions = [];
 let questions = [];
 let currentIndex = 0;
+let robotName = "";
 
 let selections = [];
 let scores = { E: 0, I: 0, N: 0, S: 0, T: 0, F: 0, J: 0, P: 0 };
@@ -135,6 +136,7 @@ function clearUI() {
 
 function initErrorTitle() {
     state = "title";
+    robotName = "";
     clearUI();
 
     const panel = buildPanel("AI Personality Builder", "Welcome, Human.", "Status: Data source unavailable");
@@ -151,6 +153,7 @@ function initErrorTitle() {
 
 function initTitle() {
     state = "title";
+    robotName = "";
     clearUI();
 
     const panel = buildPanel("AI Personality Builder", "", "Secure Configuration Environment");
@@ -206,7 +209,7 @@ function initTitle() {
 
     titleStartBtn.mousePressed(() => {
         if (!(consentCheckboxAuth.checked() && consentCheckboxAcknowledge.checked())) return;
-        startSession();
+        showRobotNamePrompt(() => startSession());
     });
 }
 
@@ -234,6 +237,73 @@ function buildPanel(title, sub, badgeText) {
     const body = createDiv("").addClass("panel-body").parent(panel);
 
     return { panel, body };
+}
+
+function showRobotNamePrompt(onConfirm) {
+    const ui = select("#uiRoot");
+    const overlay = createDiv("").addClass("popup-overlay").parent(ui);
+    const card = createDiv("").addClass("popup-card").parent(overlay);
+    const inputId = `robotNameInput-${Date.now()}`;
+
+    createDiv("AI Robot Registration").addClass("popup-title").parent(card);
+    createP("Before configuration can begin, enter the name of the AI robot that will receive this personality package.")
+        .addClass("popup-body")
+        .parent(card);
+
+    const field = createDiv("").addClass("popup-field").parent(card);
+    const label = createElement("label", "AI robot name").addClass("popup-label").parent(field);
+    const input = createInput("").addClass("popup-input").parent(field);
+    input.id(inputId);
+    input.attribute("name", `robot-name-${Date.now()}`);
+    input.attribute("placeholder", "Enter robot name");
+    input.attribute("autocomplete", "off");
+    input.attribute("autocorrect", "off");
+    input.attribute("autocapitalize", "off");
+    input.attribute("spellcheck", "false");
+    input.attribute("aria-autocomplete", "none");
+    input.elt.value = "";
+    label.attribute("for", inputId);
+
+    const error = createDiv("").addClass("popup-error").parent(card);
+
+    const actions = createDiv("").addClass("popup-actions").parent(card);
+    const backBtn = createButton("Back").addClass("btn").parent(actions);
+    const confirmBtn = createButton("Confirm Name").addClass("btn primary").parent(actions);
+
+    function submitRobotName() {
+        const nextName = normalizeRobotName(input.value());
+
+        if (!nextName) {
+            error.elt.textContent = "An AI robot name is required to continue.";
+            input.elt.focus();
+            return;
+        }
+
+        robotName = nextName;
+        overlay.remove();
+        onConfirm();
+    }
+
+    input.input(() => {
+        if (normalizeRobotName(input.value())) {
+            error.elt.textContent = "";
+        }
+    });
+
+    input.elt.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            submitRobotName();
+        }
+    });
+
+    backBtn.mousePressed(() => {
+        robotName = "";
+        overlay.remove();
+    });
+
+    confirmBtn.mousePressed(submitRobotName);
+    setTimeout(() => input.elt.focus(), 0);
 }
 
 /* ---------------- SESSION + FLOW ---------------- */
@@ -277,9 +347,11 @@ function renderQuestion() {
 
     if (markerIndex !== -1) {
         createDiv(q.prompt.slice(0, markerIndex).trim()).addClass("question-main").parent(questionWrap);
-        createDiv("The AI robot...").addClass("question-robot").parent(questionWrap);
+        const robotLine = createDiv("").addClass("question-robot").parent(questionWrap);
+        robotLine.html(robotQuestionMarkup());
     } else {
-        createDiv(q.prompt).addClass("question-main").parent(questionWrap);
+        const fullPrompt = createDiv("").addClass("question-main").parent(questionWrap);
+        fullPrompt.html(replaceRobotNameMarkup(q.prompt));
     }
 
     const opts = createDiv("").addClass("options").parent(body);
@@ -290,7 +362,8 @@ function renderQuestion() {
     q.options.forEach((opt, idx) => {
         const card = createDiv("").addClass("option-card").parent(opts);
         card.mousePressed(() => selectOption(idx, optCards));
-        createDiv(opt.text).addClass("txt").parent(card);
+        const optionText = createDiv("").addClass("txt").parent(card);
+        optionText.html(robotOptionMarkup(opt.text));
 
         optCards.push(card);
 
@@ -405,7 +478,8 @@ function renderResults() {
 
     const copy = createDiv("").addClass("profile-copy").parent(body);
     createP(profile.description).addClass("profile-paragraph").parent(copy);
-    createP(profile.summary).addClass("profile-paragraph profile-summary").parent(copy);
+    const summary = createP("").addClass("profile-paragraph profile-summary").parent(copy);
+    summary.html(replaceRobotNameMarkup(profile.summary));
 
     createDiv("").addClass("hr").parent(body);
 
@@ -425,7 +499,8 @@ function renderInstalling() {
     const panel = buildPanel("Transferring Personality Package", "", "Wireless Installation In Progress");
     const body = panel.body;
 
-    createP("Sending the selected personality profile to the AI robot over a secure wireless transfer...").parent(body);
+    const transferText = createP("").parent(body);
+    transferText.html(replaceRobotNameMarkup("Sending the selected personality profile to the AI robot over a secure wireless transfer..."));
 
     const loader = createDiv("").addClass("loader").parent(body);
     loaderFillEl = createDiv("").addClass("loader-fill").parent(loader);
@@ -437,7 +512,8 @@ function renderInstalling() {
     createDiv("").addClass("hr").parent(body);
 
     const footer = createDiv("").addClass("footer").parent(body);
-    createDiv("Please do not interrupt the AI robot during wireless transfer.").addClass("small").parent(footer);
+    const transferNote = createDiv("").addClass("small").parent(footer);
+    transferNote.html(replaceRobotNameMarkup("Please do not interrupt the AI robot during wireless transfer."));
 
     installStartMs = millis();
 }
@@ -451,9 +527,8 @@ function renderDownloaded() {
 
     const copy = createDiv("").addClass("title-copy").parent(body);
     createP("Congratulations, Human.").addClass("title-intro").parent(copy);
-    createP("Personality package has been successfully compiled and transferred to your AI robot.")
-        .addClass("title-intro")
-        .parent(copy);
+    const completionText = createP("").addClass("title-intro").parent(copy);
+    completionText.html(replaceRobotNameMarkup("Personality package has been successfully compiled and transferred to your AI robot."));
 
     createDiv("").addClass("hr").parent(body);
 
@@ -556,6 +631,52 @@ function personalityProfileFor(type) {
 }
 
 /* ---------------- UTILS ---------------- */
+
+function normalizeRobotName(value) {
+    return value.replace(/\s+/g, " ").trim();
+}
+
+function escapeHtml(value) {
+    return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll("\"", "&quot;")
+        .replaceAll("'", "&#39;");
+}
+
+function robotReferenceMarkup(capitalizeYour = false) {
+    const pronoun = capitalizeYour ? "Your" : "your";
+
+    if (!robotName) {
+        return `${pronoun} AI robot`;
+    }
+
+    const safeName = escapeHtml(robotName);
+    return `${pronoun} AI robot [<span class="robot-name">${safeName}</span>]`;
+}
+
+function replaceRobotNameMarkup(text) {
+    const lowerToken = "__ROBOT_REF_LOWER__";
+    const upperToken = "__ROBOT_REF_UPPER__";
+
+    return escapeHtml(text)
+        .replaceAll("your AI robot", lowerToken)
+        .replaceAll("the AI robot", lowerToken)
+        .replaceAll("The AI robot", upperToken)
+        .replaceAll("AI robot", lowerToken)
+        .replaceAll(upperToken, robotReferenceMarkup(true))
+        .replaceAll(lowerToken, robotReferenceMarkup(false));
+}
+
+function robotQuestionMarkup() {
+    return `What should ${robotReferenceMarkup(false)} do?`;
+}
+
+function robotOptionMarkup(text) {
+    const safeName = escapeHtml(robotName || "AI robot");
+    return `[<span class="robot-name">${safeName}</span>] ${escapeHtml(text)}`;
+}
 
 function buildTaskList(parent, steps) {
     const list = createDiv("").addClass("task-list").parent(parent);
