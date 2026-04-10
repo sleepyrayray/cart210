@@ -18,10 +18,9 @@ Constraint for that work:
 - [ ] Add subtle screen transitions or micro-animations.
 - [ ] Add package metadata on the completion screen, such as package ID or verification details.
 
-## Later Submission Tasks
-- [ ] Draft the artist statement.
-- [ ] Build the annotated bibliography.
-- [ ] Outline the final presentation / demo flow.
+## Submission Notes
+- The final project roadmap is saved in `notes/final-project-roadmap.md`.
+- The submission materials have already been prepared and submitted.
 
 ---
 
@@ -30,4 +29,4 @@ The main required app work left is:
 1. final copy pass
 2. final browser QA + cleanup pass
 
-Everything else is optional polish or class-submission work.
+Everything else is optional polish.
